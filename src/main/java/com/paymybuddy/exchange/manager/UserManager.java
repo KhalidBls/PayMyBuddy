@@ -4,13 +4,10 @@ package com.paymybuddy.exchange.manager;
 import com.paymybuddy.exchange.models.User;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.boot.MetadataSources;
-import org.hibernate.boot.registry.StandardServiceRegistry;
-import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
 
-import java.io.File;
 import java.util.List;
+
 
 public class UserManager {
 
@@ -48,11 +45,18 @@ public class UserManager {
         return user;
     }
 
-    public static Session getHibernateSession() {
+    public List<User> listUsers() {
+        session.beginTransaction();
+        List<User> users = (List<User>) session.createQuery( "from User" ).list();
+        session.getTransaction().commit();
+        session.close();
+        return users;
+    }
 
+
+    public static Session getHibernateSession() {
         final SessionFactory sf = new Configuration()
                 .configure("hibernate.cfg.xml").buildSessionFactory();
-
         final Session session = sf.openSession();
         return session;
     }
