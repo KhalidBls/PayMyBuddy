@@ -9,7 +9,7 @@ import org.hibernate.cfg.Configuration;
 import java.util.List;
 
 
-public class UserManager {
+public class UserManager implements Manager<User> {
 
     protected Session session = null;
 
@@ -17,32 +17,34 @@ public class UserManager {
         session = getHibernateSession();
     }
 
-    public void createUser(User user) {
-        updateUser(user);
+    @Override
+    public void create(User user) {
+        update(user);
     }
 
-    public void updateUser(User user) {
+    @Override
+    public User read(int id) {
+        session.beginTransaction();
+        User user = session.find(User.class,id);
+        session.getTransaction().commit();
+        session.close();
+        return user;
+    }
+
+    @Override
+    public void update(User user) {
         session.beginTransaction();
         session.save(user) ;
         session.getTransaction().commit();
         session.close();
     }
 
-
-    public void deleteUser(User user) {
+    @Override
+    public void delete(User user) {
         session.beginTransaction();
         session.delete(user) ;
         session.getTransaction().commit();
         session.close();
-    }
-
-
-    public User readUser(int id) {
-        session.beginTransaction();
-        User user = session.find(User.class,id);
-        session.getTransaction().commit();
-        session.close();
-        return user;
     }
 
     public List<User> listUsers() {
