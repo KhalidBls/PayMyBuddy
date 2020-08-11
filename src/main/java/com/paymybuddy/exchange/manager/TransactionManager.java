@@ -1,9 +1,12 @@
 package com.paymybuddy.exchange.manager;
 
 import com.paymybuddy.exchange.models.Transaction;
+import com.paymybuddy.exchange.models.User;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
+
+import java.util.List;
 
 public class TransactionManager implements Manager<Transaction> {
 
@@ -42,6 +45,7 @@ public class TransactionManager implements Manager<Transaction> {
         session.getTransaction().commit();
         session.close();
     }
+
 
     public static Session getHibernateSession() {
         final SessionFactory sf = new Configuration()
