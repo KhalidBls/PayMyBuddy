@@ -1,32 +1,14 @@
 package com.paymybuddy.exchange.models;
 
-import javax.persistence.*;
 
-@Entity
-@Table(name="transactions")
 public class Transaction {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name="id")
     private int id;
-
-    @Column(name="amount")
     private double amount;
-
-    @Column(name="id_user_sender")
     private int idUserSender;
-
-    @Column(name="id_user_receiver")
     private int idUserReceiver;
-
-    @Column(name="fees")
     private double fees;
-
-    @Column(name="id_description")
     private int idDescription;
-
-    @Column(name="type")
     private String type;
 
     public Transaction(){}
