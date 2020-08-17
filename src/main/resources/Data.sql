@@ -25,6 +25,7 @@ type varchar(100),
  REFERENCES users(id));
 
 INSERT INTO users(id,first_name, last_name, email, balance, password) VALUES (1,"bob","bobby","bob.bobby@mail.com",27.07,"bobpass");
+INSERT INTO users(id,first_name, last_name, email, balance, password) VALUES (2,"jack","jacky","jack.jacky@mail.com",12,"jackpass");
 
 /* Setting up TEST DB */
 create database paymybuddy_test;
@@ -53,3 +54,4 @@ type varchar(100),
  REFERENCES users(id));
 
 INSERT INTO users(id,first_name, last_name, email, balance, password) VALUES (1,"bob","bobby","bob.bobby@mail.com",27.07,"bobpass");
+INSERT INTO users(id,first_name, last_name, email, balance, password) VALUES (2,"jack","jacky","jack.jacky@mail.com",12,"jackpass");

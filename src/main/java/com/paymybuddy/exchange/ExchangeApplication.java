@@ -12,6 +12,7 @@ public class ExchangeApplication {
 	public static void main(String[] args) throws FileNotFoundException, SQLException, ClassNotFoundException {
 		DatabaseConfig config = new DatabaseConfig();
 		config.initDataBaseRequestFromFile();
+
 		SpringApplication.run(ExchangeApplication.class, args);
 	}
 

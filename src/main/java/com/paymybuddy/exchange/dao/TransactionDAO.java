@@ -3,17 +3,23 @@ package com.paymybuddy.exchange.dao;
 import com.paymybuddy.exchange.config.DatabaseConfig;
 import com.paymybuddy.exchange.constants.DBConstants;
 import com.paymybuddy.exchange.models.Transaction;
+import com.paymybuddy.exchange.models.User;
+import org.springframework.stereotype.Service;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
+@Service
 public class TransactionDAO implements Manager<Transaction> {
 
     DatabaseConfig dataBaseConfig = new DatabaseConfig();
 
-    @Override
-    public boolean create(Transaction transaction) {
+
+    public boolean create(Transaction transaction) throws SQLException {
         Connection con = null;
         PreparedStatement ps=null;
         try {
@@ -28,7 +34,6 @@ public class TransactionDAO implements Manager<Transaction> {
             return ps.execute();
         }catch (Exception e){
             e.printStackTrace();
-            con.rollback();
         }finally {
             dataBaseConfig.closePreparedStatement(ps);
             dataBaseConfig.closeConnection(con);
@@ -68,8 +73,9 @@ public class TransactionDAO implements Manager<Transaction> {
     }
 
     @Override
-    public boolean update(Transaction transaction) {
+    public boolean update(Transaction transaction) throws SQLException {
         Connection con = null;
+        con.setAutoCommit(false);
         PreparedStatement ps=null;
         try {
             con = dataBaseConfig.getConnection();
@@ -84,7 +90,6 @@ public class TransactionDAO implements Manager<Transaction> {
             return ps.execute();
         }catch (Exception e){
             e.printStackTrace();
-            con.rollback();
         }finally {
             dataBaseConfig.closePreparedStatement(ps);
             dataBaseConfig.closeConnection(con);
@@ -93,17 +98,17 @@ public class TransactionDAO implements Manager<Transaction> {
     }
 
     @Override
-    public boolean delete(int id) {
+    public boolean delete(int id) throws SQLException {
         Connection con = null;
         PreparedStatement ps=null;
         try {
             con = dataBaseConfig.getConnection();
             ps = con.prepareStatement(DBConstants.DELETE_TRANSACTION);
             ps.setInt(1,id);
-            return ps.execute();
+            ps.executeUpdate();
+            return true;
         }catch (Exception e){
             e.printStackTrace();
-            con.rollback();
         }finally {
             dataBaseConfig.closePreparedStatement(ps);
             dataBaseConfig.closeConnection(con);
