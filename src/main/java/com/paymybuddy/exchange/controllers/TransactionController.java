@@ -1,7 +1,5 @@
 package com.paymybuddy.exchange.controllers;
 
-import com.paymybuddy.exchange.dao.DAO;
-import com.paymybuddy.exchange.dao.DAOFactory;
 import com.paymybuddy.exchange.models.Transaction;
 import com.paymybuddy.exchange.services.TransactionService;
 import org.springframework.beans.factory.annotation.Autowired;

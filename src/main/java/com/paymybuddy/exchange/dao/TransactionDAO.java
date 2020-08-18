@@ -16,9 +16,6 @@ import java.util.List;
 
 public class TransactionDAO implements DAO<Transaction> {
 
-    @Autowired
-    DAOFactory daoFactory;
-
     DatabaseConfig dataBaseConfig = new DatabaseConfig();
 
 
@@ -37,7 +34,6 @@ public class TransactionDAO implements DAO<Transaction> {
             ps.setDouble(4,transaction.getFees());
             ps.setInt(5,transaction.getIdDescription());
             ps.setString(6,transaction.getType());
-            makeTransaction(transaction.getIdUserSender(),transaction.getIdUserReceiver(),transaction.getAmount());
             exec =  ps.execute();
             con.commit();
         }catch (Exception e){
@@ -50,14 +46,7 @@ public class TransactionDAO implements DAO<Transaction> {
         return exec;
     }
 
-    private void makeTransaction(int idUserSender, int idUserReceiver, double amount) throws SQLException {
-        User userSender = daoFactory.getUserDAO().read(idUserSender);
-        User userReceiver = daoFactory.getUserDAO().read(idUserReceiver);
-        userSender.setBalance(userSender.getBalance()-amount);
-        userReceiver.setBalance(userReceiver.getBalance()+amount);
-        daoFactory.getUserDAO().update(userSender);
-        daoFactory.getUserDAO().update(userReceiver);
-    }
+
 
     @Override
     public Transaction read(int id) {

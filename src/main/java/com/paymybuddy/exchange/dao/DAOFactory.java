@@ -2,10 +2,11 @@ package com.paymybuddy.exchange.dao;
 
 import com.paymybuddy.exchange.models.Transaction;
 import com.paymybuddy.exchange.models.User;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Repository;
 
-@Service
- public class DAOFactory {
+
+@Repository
+public class DAOFactory {
 
     public static DAO<User> getUserDAO(){
         return new UserDAO();

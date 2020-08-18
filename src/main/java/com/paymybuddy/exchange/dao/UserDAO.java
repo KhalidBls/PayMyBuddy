@@ -12,7 +12,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-@Service
+
 public class UserDAO implements DAO<User> {
 
     DatabaseConfig dataBaseConfig = new DatabaseConfig();
@@ -141,36 +141,5 @@ public class UserDAO implements DAO<User> {
             return false;
         }
     }
-
-
-   /* public User getUserByName(String firstName, String lastName) {
-        Connection con = null;
-        PreparedStatement ps=null;
-        ResultSet rs=null;
-        User user = null;
-        try {
-            con = dataBaseConfig.getConnection();
-            ps = con.prepareStatement(DBConstants.GET_USER_BY_NAME);
-            ps.setString(1,firstName);
-            ps.setString(2,lastName);
-            rs = ps.executeQuery();
-            if(rs.next()){
-                user = new User();
-                user.setId(rs.getInt("id"));
-                user.setFirstName(rs.getString("first_name"));
-                user.setLastName(rs.getString("last_name"));
-                user.setEmail(rs.getString("email"));
-                user.setBalance(rs.getDouble("balance"));
-                user.setPassword(rs.getString("password"));
-            }
-        }catch (Exception e){
-            e.printStackTrace();
-        }finally {
-            dataBaseConfig.closeResultSet(rs);
-            dataBaseConfig.closePreparedStatement(ps);
-            dataBaseConfig.closeConnection(con);
-            return user;
-        }
-    }*/
 
 }
