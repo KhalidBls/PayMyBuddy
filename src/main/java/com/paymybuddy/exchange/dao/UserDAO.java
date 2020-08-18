@@ -13,16 +13,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-public class UserDAO implements Manager<User> {
+public class UserDAO implements DAO<User> {
 
     DatabaseConfig dataBaseConfig = new DatabaseConfig();
 
+    @Override
     public List<User> listAll() {
         List<User> allUsers = new ArrayList<>();
         Connection con = null;
         PreparedStatement ps=null;
         ResultSet rs=null;
-        User user = null;
+        User user;
         try {
             con = dataBaseConfig.getConnection();
             ps = con.prepareStatement(DBConstants.GET_ALL_USERS);
@@ -111,7 +112,7 @@ public class UserDAO implements Manager<User> {
             ps.setString(3,user.getEmail());
             ps.setDouble(4,user.getBalance());
             ps.setString(5,user.getPassword());
-            ps.setInt(5,user.getId());
+            ps.setInt(6,user.getId());
             return ps.execute();
         }catch (Exception e){
             e.printStackTrace();
@@ -142,7 +143,7 @@ public class UserDAO implements Manager<User> {
     }
 
 
-    public User getUserByName(String firstName, String lastName) {
+   /* public User getUserByName(String firstName, String lastName) {
         Connection con = null;
         PreparedStatement ps=null;
         ResultSet rs=null;
@@ -170,6 +171,6 @@ public class UserDAO implements Manager<User> {
             dataBaseConfig.closeConnection(con);
             return user;
         }
-    }
+    }*/
 
 }

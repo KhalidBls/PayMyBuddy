@@ -13,7 +13,26 @@ public class Transaction {
 
     public Transaction(){}
 
+    public Transaction(int id, double amount, int idUserSender, int idUserReceiver, double fees, int idDescription, String type) {
+        this.id = id;
+        this.amount = amount;
+        this.idUserSender = idUserSender;
+        this.idUserReceiver = idUserReceiver;
+        this.fees = fees;
+        this.idDescription = idDescription;
+        this.type = type;
+    }
+
     public Transaction(double amount, int idUserSender, int idUserReceiver, double fees, int idDescription, String type) {
+        this.amount = amount;
+        this.idUserSender = idUserSender;
+        this.idUserReceiver = idUserReceiver;
+        this.fees = fees;
+        this.idDescription = idDescription;
+        this.type = type;
+    }
+
+    public Transaction(double amount, int idUserSender, int idUserReceiver, int idDescription, String type) {
         this.amount = amount;
         this.idUserSender = idUserSender;
         this.idUserReceiver = idUserReceiver;

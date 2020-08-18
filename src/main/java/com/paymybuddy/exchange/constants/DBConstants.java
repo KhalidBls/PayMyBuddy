@@ -13,5 +13,5 @@ public class DBConstants {
     public static final String GET_TRANSACTION = "SELECT * FROM paymybuddy_prod.transactions where id=?";
     public static final String UPDATE_TRANSACTION = "update paymybuddy_prod.transactions set amount=?, id_user_sender=?, id_user_receiver=?, fees=?, id_description=? type=?, where id=?";
     public static final String DELETE_TRANSACTION = "DELETE FROM paymybuddy_prod.transactions where id=?";
-
+    public static final String GET_ALL_TRANSACTIONS = "SELECT * FROM paymybuddy_prod.transactions";
 }

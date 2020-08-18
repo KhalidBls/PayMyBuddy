@@ -4,7 +4,7 @@ import com.paymybuddy.exchange.config.DatabaseConfig;
 import com.paymybuddy.exchange.constants.DBConstants;
 import com.paymybuddy.exchange.models.Transaction;
 import com.paymybuddy.exchange.models.User;
-import org.springframework.stereotype.Service;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -13,8 +13,11 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-@Service
-public class TransactionDAO implements Manager<Transaction> {
+
+public class TransactionDAO implements DAO<Transaction> {
+
+    @Autowired
+    DAOFactory daoFactory;
 
     DatabaseConfig dataBaseConfig = new DatabaseConfig();
 
@@ -22,8 +25,11 @@ public class TransactionDAO implements Manager<Transaction> {
     public boolean create(Transaction transaction) throws SQLException {
         Connection con = null;
         PreparedStatement ps=null;
+        boolean exec = false;
+
         try {
             con = dataBaseConfig.getConnection();
+            con.setAutoCommit(false);
             ps = con.prepareStatement(DBConstants.SAVE_TRANSACTION);
             ps.setDouble(1,transaction.getAmount());
             ps.setInt(2,transaction.getIdUserSender());
@@ -31,14 +37,26 @@ public class TransactionDAO implements Manager<Transaction> {
             ps.setDouble(4,transaction.getFees());
             ps.setInt(5,transaction.getIdDescription());
             ps.setString(6,transaction.getType());
-            return ps.execute();
+            makeTransaction(transaction.getIdUserSender(),transaction.getIdUserReceiver(),transaction.getAmount());
+            exec =  ps.execute();
+            con.commit();
         }catch (Exception e){
+            con.rollback();
             e.printStackTrace();
         }finally {
             dataBaseConfig.closePreparedStatement(ps);
             dataBaseConfig.closeConnection(con);
-            return false;
         }
+        return exec;
+    }
+
+    private void makeTransaction(int idUserSender, int idUserReceiver, double amount) throws SQLException {
+        User userSender = daoFactory.getUserDAO().read(idUserSender);
+        User userReceiver = daoFactory.getUserDAO().read(idUserReceiver);
+        userSender.setBalance(userSender.getBalance()-amount);
+        userReceiver.setBalance(userReceiver.getBalance()+amount);
+        daoFactory.getUserDAO().update(userSender);
+        daoFactory.getUserDAO().update(userReceiver);
     }
 
     @Override
@@ -113,6 +131,38 @@ public class TransactionDAO implements Manager<Transaction> {
             dataBaseConfig.closePreparedStatement(ps);
             dataBaseConfig.closeConnection(con);
             return false;
+        }
+    }
+
+    @Override
+    public List<Transaction> listAll() {
+        List<Transaction> allTransactions = new ArrayList<>();
+        Connection con = null;
+        PreparedStatement ps=null;
+        ResultSet rs=null;
+        Transaction transaction = null;
+        try {
+            con = dataBaseConfig.getConnection();
+            ps = con.prepareStatement(DBConstants.GET_ALL_TRANSACTIONS);
+            rs = ps.executeQuery();
+            while(rs.next()){
+                transaction = new Transaction();
+                transaction.setId(rs.getInt("id"));
+                transaction.setAmount(rs.getDouble("amount"));
+                transaction.setIdUserSender(rs.getInt("user_sender"));
+                transaction.setIdUserReceiver(rs.getInt("user_receiver"));
+                transaction.setFees(rs.getDouble("fees"));
+                transaction.setIdDescription(rs.getInt("id_description"));
+                transaction.setType(rs.getString("type"));
+                allTransactions.add(transaction);
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }finally {
+            dataBaseConfig.closeResultSet(rs);
+            dataBaseConfig.closePreparedStatement(ps);
+            dataBaseConfig.closeConnection(con);
+            return allTransactions;
         }
     }
 }

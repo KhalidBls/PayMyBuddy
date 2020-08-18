@@ -1,7 +1,7 @@
 package com.paymybuddy.exchange.controllers;
 
-import com.paymybuddy.exchange.dao.UserDAO;
 import com.paymybuddy.exchange.models.User;
+import com.paymybuddy.exchange.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,15 +15,15 @@ import java.util.List;
 public class UserController {
 
     @Autowired
-    UserDAO userDAO;
+    UserService userService;
 
-    @PostMapping
-    public ResponseEntity<Void> createUser(@RequestBody User user){
-        boolean created = userDAO.create(user);
+    @PostMapping("users")
+    public ResponseEntity<Void> createUser(@RequestBody User user) throws SQLException {
+        boolean created = userService.create(user);
         if (created == false)
             return ResponseEntity.noContent().build();
 
-        User ourUser = userDAO.getUserByName(user.getFirstName(),user.getLastName());
+        User ourUser = userService.read(user.getId());
         if (ourUser == null)
             return ResponseEntity.noContent().build();
 
@@ -38,26 +38,26 @@ public class UserController {
 
     @GetMapping("/users/{id}")
     public User getUserById(@PathVariable int id){
-        return userDAO.read(id);
+        return userService.read(id);
     }
 
     @GetMapping("/users")
     public List<User> getUsers(){
-        return userDAO.listAll();
+        return userService.listAll();
     }
 
     @PutMapping("/users/{id}")
-    public User updateUser(@PathVariable int id,@RequestBody User user){
-        User userUpdated = userDAO.read(id);
+    public User updateUser(@PathVariable int id,@RequestBody User user) throws SQLException {
+        User userUpdated = userService.read(id);
         if (userUpdated!=null){
-            userDAO.update(userUpdated);
+            userService.update(userUpdated);
         }
         return userUpdated;
     }
 
     @DeleteMapping("/users/{id}")
     public List<User> deleteUserById(@PathVariable int id) throws SQLException {
-        userDAO.delete(id);
+        userService.delete(id);
         return getUsers();
     }
 
