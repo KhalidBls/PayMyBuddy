@@ -3,8 +3,6 @@ package com.paymybuddy.exchange.dao;
 import com.paymybuddy.exchange.config.DatabaseConfig;
 import com.paymybuddy.exchange.constants.DBConstants;
 import com.paymybuddy.exchange.models.Transaction;
-import com.paymybuddy.exchange.models.User;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -82,10 +80,11 @@ public class TransactionDAO implements DAO<Transaction> {
     @Override
     public boolean update(Transaction transaction) throws SQLException {
         Connection con = null;
-        con.setAutoCommit(false);
         PreparedStatement ps=null;
+        boolean exec = false;
         try {
             con = dataBaseConfig.getConnection();
+            con.setAutoCommit(false);
             ps = con.prepareStatement(DBConstants.UPDATE_TRANSACTION);
             ps.setDouble(1,transaction.getAmount());
             ps.setInt(2,transaction.getIdUserSender());
@@ -94,33 +93,39 @@ public class TransactionDAO implements DAO<Transaction> {
             ps.setInt(5,transaction.getIdDescription());
             ps.setString(6,transaction.getType());
             ps.setInt(7,transaction.getId());
-            return ps.execute();
+            exec = ps.execute();
+            con.commit();
         }catch (Exception e){
             e.printStackTrace();
+            con.rollback();
         }finally {
             dataBaseConfig.closePreparedStatement(ps);
             dataBaseConfig.closeConnection(con);
-            return false;
         }
+        return exec;
     }
 
     @Override
     public boolean delete(int id) throws SQLException {
         Connection con = null;
         PreparedStatement ps=null;
+        boolean exec = false;
         try {
             con = dataBaseConfig.getConnection();
+            con.setAutoCommit(false);
             ps = con.prepareStatement(DBConstants.DELETE_TRANSACTION);
             ps.setInt(1,id);
             ps.executeUpdate();
-            return true;
+            con.commit();
+            exec = true;
         }catch (Exception e){
             e.printStackTrace();
+            con.rollback();
         }finally {
             dataBaseConfig.closePreparedStatement(ps);
             dataBaseConfig.closeConnection(con);
-            return false;
         }
+        return exec;
     }
 
     @Override

@@ -3,7 +3,6 @@ package com.paymybuddy.exchange.dao;
 import com.paymybuddy.exchange.config.DatabaseConfig;
 import com.paymybuddy.exchange.constants.DBConstants;
 import com.paymybuddy.exchange.models.User;
-import org.springframework.stereotype.Service;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -49,25 +48,29 @@ public class UserDAO implements DAO<User> {
     }
 
     @Override
-    public boolean create(User user){
+    public boolean create(User user) throws SQLException {
         Connection con = null;
         PreparedStatement ps=null;
+        boolean exec = false;
         try {
             con = dataBaseConfig.getConnection();
+            con.setAutoCommit(false);
             ps = con.prepareStatement(DBConstants.SAVE_USER);
             ps.setString(1,user.getFirstName());
             ps.setString(2,user.getLastName());
             ps.setString(3,user.getEmail());
             ps.setDouble(4,user.getBalance());
             ps.setString(5,user.getPassword());
-            return ps.execute();
+            exec = ps.execute();
+            con.commit();
         }catch (Exception e){
             e.printStackTrace();
+            con.rollback();
         }finally {
             dataBaseConfig.closePreparedStatement(ps);
             dataBaseConfig.closeConnection(con);
-            return false;
         }
+        return exec;
     }
 
     @Override
@@ -101,11 +104,13 @@ public class UserDAO implements DAO<User> {
     }
 
     @Override
-    public boolean update(User user){
+    public boolean update(User user) throws SQLException {
         Connection con = null;
         PreparedStatement ps=null;
+        boolean exec = false;
         try {
             con = dataBaseConfig.getConnection();
+            con.setAutoCommit(false);
             ps = con.prepareStatement(DBConstants.UPDATE_USER);
             ps.setString(1,user.getFirstName());
             ps.setString(2,user.getLastName());
@@ -113,33 +118,39 @@ public class UserDAO implements DAO<User> {
             ps.setDouble(4,user.getBalance());
             ps.setString(5,user.getPassword());
             ps.setInt(6,user.getId());
-            return ps.execute();
+            exec = ps.execute();
+            con.commit();
         }catch (Exception e){
             e.printStackTrace();
+            con.rollback();
         }finally {
             dataBaseConfig.closePreparedStatement(ps);
             dataBaseConfig.closeConnection(con);
-            return false;
         }
+        return exec;
     }
 
     @Override
     public boolean delete(int id) throws SQLException {
         Connection con = null;
         PreparedStatement ps=null;
+        boolean exec = false;
         try {
             con = dataBaseConfig.getConnection();
+            con.setAutoCommit(false);
             ps = con.prepareStatement(DBConstants.DELETE_USER);
             ps.setInt(1,id);
             ps.executeUpdate();
-            return true;
+            con.commit();
+            exec = true;
         }catch (Exception e){
             e.printStackTrace();
+            con.rollback();
         }finally {
             dataBaseConfig.closePreparedStatement(ps);
             dataBaseConfig.closeConnection(con);
-            return false;
         }
+        return exec;
     }
 
 }
