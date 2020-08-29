@@ -49,9 +49,9 @@ public class UserController {
     @PutMapping("/users/{id}")
     public User updateUser(@PathVariable int id,@RequestBody User user) throws SQLException {
         User userUpdated = userService.read(id);
-        if (userUpdated!=null){
+        if (userUpdated!=null)
             userService.update(userUpdated);
-        }
+
         return userUpdated;
     }
 

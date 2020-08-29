@@ -108,7 +108,6 @@ public class UserDAO implements DAO<User> {
     public boolean update(User user) throws SQLException {
         Connection con = null;
         PreparedStatement ps=null;
-        boolean exec = false;
         try {
             con = dataBaseConfig.getConnection();
             con.setAutoCommit(false);
@@ -119,23 +118,24 @@ public class UserDAO implements DAO<User> {
             ps.setDouble(4,user.getBalance());
             ps.setString(5,user.getPassword());
             ps.setInt(6,user.getId());
-            exec = ps.execute();
+            ps.execute();
             con.commit();
         }catch (Exception e){
             e.printStackTrace();
             con.rollback();
+            return false;
         }finally {
+            con.setAutoCommit(true);
             dataBaseConfig.closePreparedStatement(ps);
             dataBaseConfig.closeConnection(con);
+            return true;
         }
-        return exec;
     }
 
     @Override
     public boolean delete(int id) throws SQLException {
         Connection con = null;
         PreparedStatement ps=null;
-        boolean exec = false;
         try {
             con = dataBaseConfig.getConnection();
             con.setAutoCommit(false);
@@ -143,15 +143,16 @@ public class UserDAO implements DAO<User> {
             ps.setInt(1,id);
             ps.executeUpdate();
             con.commit();
-            exec = true;
         }catch (Exception e){
             e.printStackTrace();
             con.rollback();
+            return false;
         }finally {
+            con.setAutoCommit(true);
             dataBaseConfig.closePreparedStatement(ps);
             dataBaseConfig.closeConnection(con);
+            return true;
         }
-        return exec;
     }
 
 }

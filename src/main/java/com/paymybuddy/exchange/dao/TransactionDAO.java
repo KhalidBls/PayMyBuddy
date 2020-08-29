@@ -20,8 +20,6 @@ public class TransactionDAO implements DAO<Transaction> {
     public boolean create(Transaction transaction) throws SQLException {
         Connection con = null;
         PreparedStatement ps=null;
-        boolean exec = false;
-
         try {
             con = dataBaseConfig.getConnection();
             con.setAutoCommit(false);
@@ -32,16 +30,18 @@ public class TransactionDAO implements DAO<Transaction> {
             ps.setDouble(4,transaction.getFees());
             ps.setInt(5,transaction.getIdDescription());
             ps.setString(6,transaction.getType());
-            exec =  ps.execute();
+            ps.execute();
             con.commit();
         }catch (Exception e){
             con.rollback();
             e.printStackTrace();
+            return false;
         }finally {
+            con.setAutoCommit(true);
             dataBaseConfig.closePreparedStatement(ps);
             dataBaseConfig.closeConnection(con);
+            return true;
         }
-        return exec;
     }
 
 
@@ -81,7 +81,6 @@ public class TransactionDAO implements DAO<Transaction> {
     public boolean update(Transaction transaction) throws SQLException {
         Connection con = null;
         PreparedStatement ps=null;
-        boolean exec = false;
         try {
             con = dataBaseConfig.getConnection();
             con.setAutoCommit(false);
@@ -93,23 +92,24 @@ public class TransactionDAO implements DAO<Transaction> {
             ps.setInt(5,transaction.getIdDescription());
             ps.setString(6,transaction.getType());
             ps.setInt(7,transaction.getId());
-            exec = ps.execute();
+            ps.execute();
             con.commit();
         }catch (Exception e){
             e.printStackTrace();
             con.rollback();
+            return false;
         }finally {
+            con.setAutoCommit(true);
             dataBaseConfig.closePreparedStatement(ps);
             dataBaseConfig.closeConnection(con);
+            return true;
         }
-        return exec;
     }
 
     @Override
     public boolean delete(int id) throws SQLException {
         Connection con = null;
         PreparedStatement ps=null;
-        boolean exec = false;
         try {
             con = dataBaseConfig.getConnection();
             con.setAutoCommit(false);
@@ -117,15 +117,16 @@ public class TransactionDAO implements DAO<Transaction> {
             ps.setInt(1,id);
             ps.executeUpdate();
             con.commit();
-            exec = true;
         }catch (Exception e){
             e.printStackTrace();
             con.rollback();
+            return false;
         }finally {
+            con.setAutoCommit(true);
             dataBaseConfig.closePreparedStatement(ps);
             dataBaseConfig.closeConnection(con);
+            return true;
         }
-        return exec;
     }
 
     @Override

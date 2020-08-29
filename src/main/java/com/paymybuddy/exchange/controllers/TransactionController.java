@@ -9,6 +9,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
 import java.sql.SQLException;
+import java.util.List;
 
 @RestController
 public class TransactionController {
@@ -39,6 +40,26 @@ public class TransactionController {
     @GetMapping("/transactions/{id}")
     public Transaction getTransactionById(@PathVariable int id){
         return transactionService.read(id);
+    }
+
+    @GetMapping("/transactions")
+    public List<Transaction> getTransactions(){
+        return transactionService.listAll();
+    }
+
+    @PutMapping("/transactions/{id}")
+    public Transaction updateTransaction(@PathVariable int id,@RequestBody Transaction transaction) throws SQLException {
+        Transaction transactionUpdated = transactionService.read(id);
+        if(transactionUpdated!=null)
+            transactionService.update(transactionUpdated);
+
+        return transactionUpdated;
+    }
+
+    @DeleteMapping("/transactions/{id}")
+    public List<Transaction> deleteTransactionById(@PathVariable int id) throws SQLException {
+        transactionService.delete(id);
+        return getTransactions();
     }
 
 }

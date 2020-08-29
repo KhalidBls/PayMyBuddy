@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.sql.SQLException;
+import java.util.List;
 
 @Service
 public class TransactionService {
@@ -47,4 +48,7 @@ public class TransactionService {
     }
 
 
+    public List<Transaction> listAll() {
+        return daoFactory.getTransactionDAO().listAll();
+    }
 }

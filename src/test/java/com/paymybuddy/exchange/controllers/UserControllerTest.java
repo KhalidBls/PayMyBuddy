@@ -13,13 +13,15 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
-import java.sql.SQLException;
-
+import static org.hamcrest.Matchers.*;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
 
 @WebMvcTest(UserController.class)
 @RunWith(SpringRunner.class)
@@ -56,7 +58,28 @@ public class UserControllerTest {
                 .andExpect(status().is(201));
 
         assertTrue(user.getFirstName().equals("khalid"));
+    }
 
+    @Test
+    public void testGetUserById() throws Exception {
+        //ARRANGE
+        User user = new User("bob","bobby","bob@mail.com",12.0,"bobpass");
+        user.setId(77);
+
+        //ACT
+        when(userService.read(77)).thenReturn(user);
+
+        //ASSERT
+        mockMvc.perform(get("/users/77")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.firstName", is(user.getFirstName())))
+                .andExpect(jsonPath("$.lastName", is(user.getLastName())))
+                .andExpect(jsonPath("$.email", is(user.getEmail())))
+                .andExpect(jsonPath("$.balance", is(user.getBalance())))
+                .andExpect(jsonPath("$.password", is(user.getPassword())));
+
+        verify(userService,times(1)).read(user.getId());
     }
 
 }
