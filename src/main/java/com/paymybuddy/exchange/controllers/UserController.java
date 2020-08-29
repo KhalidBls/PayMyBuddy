@@ -17,13 +17,13 @@ public class UserController {
     @Autowired
     UserService userService;
 
-    @PostMapping("users")
+    @PostMapping("/users")
     public ResponseEntity<Void> createUser(@RequestBody User user) throws SQLException {
         boolean created = userService.create(user);
         if (created == false)
-            return ResponseEntity.noContent().build();
+           return ResponseEntity.noContent().build();
 
-        User ourUser = userService.read(user.getId());
+        User ourUser = userService.getUserByName(user.getFirstName(),user.getLastName());
         if (ourUser == null)
             return ResponseEntity.noContent().build();
 

@@ -51,7 +51,6 @@ public class UserDAO implements DAO<User> {
     public boolean create(User user) throws SQLException {
         Connection con = null;
         PreparedStatement ps=null;
-        boolean exec = false;
         try {
             con = dataBaseConfig.getConnection();
             con.setAutoCommit(false);
@@ -61,16 +60,18 @@ public class UserDAO implements DAO<User> {
             ps.setString(3,user.getEmail());
             ps.setDouble(4,user.getBalance());
             ps.setString(5,user.getPassword());
-            exec = ps.execute();
+            ps.execute();
             con.commit();
         }catch (Exception e){
             e.printStackTrace();
             con.rollback();
+            return false;
         }finally {
+            con.setAutoCommit(true);
             dataBaseConfig.closePreparedStatement(ps);
             dataBaseConfig.closeConnection(con);
+            return true;
         }
-        return exec;
     }
 
     @Override

@@ -35,4 +35,13 @@ public class UserService {
     public void delete(int id) throws SQLException {
         daoFactory.getUserDAO().delete(id);
     }
+
+    public User getUserByName(String firstName,String lastName){
+        for (User user : listAll()) {
+            if (user.getFirstName().equals(firstName) && user.getLastName().equals(lastName))
+                return user;
+        }
+        return null;
+    }
+
 }
