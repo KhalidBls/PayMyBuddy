@@ -3,10 +3,12 @@ package com.paymybuddy.exchange.services;
 import com.paymybuddy.exchange.dao.DAOFactory;
 import com.paymybuddy.exchange.models.BankAccount;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.sql.SQLException;
 import java.util.List;
 
+@Service
 public class BankAccountService {
 
     @Autowired
