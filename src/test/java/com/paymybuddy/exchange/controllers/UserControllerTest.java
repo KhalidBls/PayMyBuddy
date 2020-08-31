@@ -1,6 +1,5 @@
 package com.paymybuddy.exchange.controllers;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.paymybuddy.exchange.models.User;
 import com.paymybuddy.exchange.services.UserService;
