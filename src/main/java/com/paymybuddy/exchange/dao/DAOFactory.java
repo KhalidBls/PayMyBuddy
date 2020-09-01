@@ -1,14 +1,9 @@
 package com.paymybuddy.exchange.dao;
 
-import com.paymybuddy.exchange.models.BankAccount;
-import com.paymybuddy.exchange.models.Description;
-import com.paymybuddy.exchange.models.Transaction;
-import com.paymybuddy.exchange.models.User;
-import org.springframework.stereotype.Repository;
-import sun.security.krb5.internal.crypto.Des;
+import com.paymybuddy.exchange.models.*;
 
 
-@Repository
+
 public class DAOFactory {
 
     public static DAO<User> getUserDAO(){
@@ -22,5 +17,7 @@ public class DAOFactory {
     public static DAO<BankAccount> getBankAccountDAO(){return new BankAccountDAO();}
 
     public static DAO<Description> getDescriptionDAO(){return new DescriptionDAO();}
+
+    public static DAO<UserRelationship> getUserRelationshipDAO(){return new UserRelationshipDAO();}
 
 }

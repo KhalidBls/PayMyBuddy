@@ -73,6 +73,7 @@ public class DescriptionDAO implements DAO<Description>  {
             con.setAutoCommit(false);
             ps = con.prepareStatement(DBConstants.UPDATE_DESCRIPTION);
             ps.setString(1,description.getContent());
+            ps.setInt(2,description.getId());
             ps.execute();
             con.commit();
         }catch (Exception e){
@@ -119,7 +120,7 @@ public class DescriptionDAO implements DAO<Description>  {
         Description description;
         try {
             con = dataBaseConfig.getConnection();
-            ps = con.prepareStatement(DBConstants.GET_ALL_BANK_ACCOUNT);
+            ps = con.prepareStatement(DBConstants.GET_ALL_DESCRIPTION);
             rs = ps.executeQuery();
             while(rs.next()){
                 description = new Description();

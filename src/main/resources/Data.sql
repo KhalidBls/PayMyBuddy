@@ -12,8 +12,10 @@ password varchar(100) NOT NULL
 );
 
 create table users_relationship(
+id int PRIMARY KEY AUTO_INCREMENT,
 id_user_relating int NOT NULL,
 id_user_related int NOT NULL,
+date_creation timestamp DEFAULT CURRENT_TIMESTAMP,
 FOREIGN KEY (id_user_relating)
  REFERENCES users(id),
  FOREIGN KEY (id_user_related)
@@ -65,8 +67,10 @@ password varchar(100) NOT NULL
 );
 
 create table users_relationship(
+id int PRIMARY KEY AUTO_INCREMENT,
 id_user_relating int NOT NULL,
 id_user_related int NOT NULL,
+date_creation timestamp DEFAULT CURRENT_TIMESTAMP,
 FOREIGN KEY (id_user_relating)
  REFERENCES users(id),
  FOREIGN KEY (id_user_related)

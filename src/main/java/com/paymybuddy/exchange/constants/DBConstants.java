@@ -22,6 +22,13 @@ public class DBConstants {
 
     public static final String SAVE_DESCRIPTION = "insert into paymybuddy_prod.descriptions(content) values(?)";
     public static final String GET_DESCRIPTION ="SELECT * FROM paymybuddy_prod.descriptions where id=?";
-    public static final String UPDATE_DESCRIPTION = "update paymybuddy_prod.descriptions set content=?";
+    public static final String UPDATE_DESCRIPTION = "update paymybuddy_prod.descriptions set content=? where id=?";
     public static final String DELETE_DESCRIPTION ="DELETE FROM paymybuddy_prod.descriptions where id=?";
+    public static final String GET_ALL_DESCRIPTION ="SELECT * FROM paymybuddy_prod.descriptions" ;
+
+    public static final String SAVE_RELATIONSHIP = "insert into paymybuddy_prod.users_relationship (id_user_relating,id_user_related) values(?)";
+    public static final String GET_RELATIONSHIP ="SELECT * FROM paymybuddy_prod.users_relationship where id=?" ;
+    public static final String UPDATE_RELATIONSHIP = "update paymybuddy_prod.users_relationship set id_user_relating=? id_user_related=? date_creation=? where id=?";
+    public static final String DELETE_RELATIONSHIP = "DELETE FROM paymybuddy_prod.users_relationship where id=?";
+    public static final String GET_ALL_RELATIONSHIP = "SELECT * FROM paymybuddy_prod.users_relationship";
 }
