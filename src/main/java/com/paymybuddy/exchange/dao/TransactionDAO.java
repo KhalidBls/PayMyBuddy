@@ -29,7 +29,7 @@ public class TransactionDAO implements DAO<Transaction> {
             ps.setInt(3,transaction.getIdUserReceiver());
             ps.setDouble(4,transaction.getFees());
             ps.setInt(5,transaction.getIdDescription());
-            ps.setString(6,transaction.getType());
+            ps.setString(6,transaction.getType().toString());
             ps.setInt(7,transaction.getId());
             ps.execute();
             con.commit();
@@ -91,7 +91,7 @@ public class TransactionDAO implements DAO<Transaction> {
             ps.setInt(3,transaction.getIdUserReceiver());
             ps.setDouble(4,transaction.getFees());
             ps.setInt(5,transaction.getIdDescription());
-            ps.setString(6,transaction.getType());
+            ps.setString(6,transaction.getType().toString());
             ps.setInt(7,transaction.getId());
             ps.execute();
             con.commit();

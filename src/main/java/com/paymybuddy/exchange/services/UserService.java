@@ -24,12 +24,12 @@ public class UserService {
     }
 
 
-    public void update(User userUpdated) throws SQLException {
-        DAOFactory.getUserDAO().update(userUpdated);
+    public boolean update(User userUpdated) throws SQLException {
+        return DAOFactory.getUserDAO().update(userUpdated);
     }
 
-    public void delete(int id) throws SQLException {
-        DAOFactory.getUserDAO().delete(id);
+    public boolean delete(int id) throws SQLException {
+        return DAOFactory.getUserDAO().delete(id);
     }
 
     public User getUserByName(String firstName,String lastName){

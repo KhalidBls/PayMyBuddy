@@ -1,6 +1,8 @@
 package com.paymybuddy.exchange.models;
 
 
+import com.paymybuddy.exchange.constants.TransactionType;
+
 public class Transaction {
 
     private int id;
@@ -9,11 +11,11 @@ public class Transaction {
     private int idUserReceiver;
     private double fees;
     private int idDescription;
-    private String type;
+    private TransactionType type;
 
     public Transaction(){}
 
-    public Transaction(int id, double amount, int idUserSender, int idUserReceiver, double fees, int idDescription, String type) {
+    public Transaction(int id, double amount, int idUserSender, int idUserReceiver, double fees, int idDescription, TransactionType type) {
         this.id = id;
         this.amount = amount;
         this.idUserSender = idUserSender;
@@ -23,7 +25,7 @@ public class Transaction {
         this.type = type;
     }
 
-    public Transaction(double amount, int idUserSender, int idUserReceiver, double fees, int idDescription, String type) {
+    public Transaction(double amount, int idUserSender, int idUserReceiver, double fees, int idDescription, TransactionType type) {
         this.amount = amount;
         this.idUserSender = idUserSender;
         this.idUserReceiver = idUserReceiver;
@@ -32,7 +34,7 @@ public class Transaction {
         this.type = type;
     }
 
-    public Transaction(double amount, int idUserSender, int idUserReceiver, int idDescription, String type) {
+    public Transaction(double amount, int idUserSender, int idUserReceiver, int idDescription, TransactionType type) {
         this.amount = amount;
         this.idUserSender = idUserSender;
         this.idUserReceiver = idUserReceiver;
@@ -89,11 +91,14 @@ public class Transaction {
         this.idDescription = idDescription;
     }
 
-    public String getType() {
+    public TransactionType getType() {
         return type;
     }
 
     public void setType(String type) {
-        this.type = type;
+        if(type.toLowerCase().equals("payment"))
+            this.type = TransactionType.PAYMENT;
+        else
+            this.type = TransactionType.REFUND;
     }
 }

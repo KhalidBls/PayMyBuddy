@@ -1,5 +1,6 @@
 package com.paymybuddy.exchange.controllers;
 import com.paymybuddy.exchange.models.Description;
+import com.paymybuddy.exchange.models.Transaction;
 import com.paymybuddy.exchange.services.DescriptionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -54,6 +55,12 @@ public class DescriptionController {
             descriptionService.update(descriptionUpdated);
 
         return descriptionUpdated;
+    }
+
+    @DeleteMapping("/transactions/{id}")
+    public List<Description> deleteTransactionById(@PathVariable int id) throws SQLException {
+        descriptionService.delete(id);
+        return getAllDescription();
     }
 
 }
