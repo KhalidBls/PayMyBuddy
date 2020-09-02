@@ -153,7 +153,6 @@ public class UserControllerTest {
                 .andExpect(jsonPath("$[1].email", is(user1.getEmail())))
                 .andExpect(jsonPath("$[1].balance", is(user1.getBalance())))
                 .andExpect(jsonPath("$[1].password", is(user1.getPassword())));
-
     }
 
 }
