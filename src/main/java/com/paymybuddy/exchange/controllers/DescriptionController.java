@@ -57,8 +57,8 @@ public class DescriptionController {
         return descriptionUpdated;
     }
 
-    @DeleteMapping("/transactions/{id}")
-    public List<Description> deleteTransactionById(@PathVariable int id) throws SQLException {
+    @DeleteMapping("/descriptions/{id}")
+    public List<Description> deleteDescriptionById(@PathVariable int id) throws SQLException {
         descriptionService.delete(id);
         return getAllDescription();
     }
