@@ -14,7 +14,7 @@ import java.util.List;
 
 public class TransactionDAO implements DAO<Transaction> {
 
-    DatabaseConfig dataBaseConfig = new DatabaseConfig();
+    public DatabaseConfig dataBaseConfig = new DatabaseConfig();
 
 
     public boolean create(Transaction transaction) throws SQLException {

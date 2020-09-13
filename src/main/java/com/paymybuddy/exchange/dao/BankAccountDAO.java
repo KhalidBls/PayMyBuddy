@@ -13,7 +13,7 @@ import java.util.List;
 
 public class BankAccountDAO implements DAO<BankAccount> {
 
-    DatabaseConfig dataBaseConfig = new DatabaseConfig();
+    public DatabaseConfig dataBaseConfig = new DatabaseConfig();
 
     @Override
     public boolean create(BankAccount bankAccount) throws SQLException {

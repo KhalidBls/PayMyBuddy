@@ -1,8 +1,6 @@
 package com.paymybuddy.exchange.controllers;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.paymybuddy.exchange.models.Description;
 import com.paymybuddy.exchange.models.Transaction;
 import com.paymybuddy.exchange.services.TransactionService;
 import org.junit.Test;
@@ -14,7 +12,6 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
-import java.sql.SQLException;
 import java.util.Arrays;
 
 import static org.hamcrest.Matchers.hasSize;

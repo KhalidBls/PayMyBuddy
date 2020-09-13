@@ -14,7 +14,9 @@ import java.util.List;
 
 public class UserDAO implements DAO<User> {
 
-    DatabaseConfig dataBaseConfig = new DatabaseConfig();
+    public DatabaseConfig dataBaseConfig = new DatabaseConfig();
+
+    public UserDAO(){}
 
     @Override
     public List<User> listAll() {

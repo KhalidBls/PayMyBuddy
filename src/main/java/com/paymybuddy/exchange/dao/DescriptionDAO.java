@@ -13,7 +13,7 @@ import java.util.List;
 
 public class DescriptionDAO implements DAO<Description>  {
 
-    DatabaseConfig dataBaseConfig = new DatabaseConfig();
+    public DatabaseConfig dataBaseConfig = new DatabaseConfig();
 
     @Override
     public boolean create(Description description) throws SQLException {

@@ -13,7 +13,7 @@ import java.util.List;
 
 public class UserRelationshipDAO  implements DAO<UserRelationship>{
 
-    DatabaseConfig dataBaseConfig = new DatabaseConfig();
+    public DatabaseConfig dataBaseConfig = new DatabaseConfig();
 
     @Override
     public boolean create(UserRelationship userRelationship) throws SQLException {

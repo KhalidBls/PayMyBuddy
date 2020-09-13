@@ -2,33 +2,33 @@ package com.paymybuddy.exchange.constants;
 
 public class DBConstants {
 
-    public static final String SAVE_USER = "insert into paymybuddy_prod.users(first_name, last_name, email, balance, password) values(?,?,?,?,?)";
-    public static final String GET_USER = "SELECT * FROM paymybuddy_prod.users where id=?";
-    public static final String UPDATE_USER = "update paymybuddy_prod.users set first_name=?, last_name=?, email=?, balance=?, password=? where id=?";
-    public static final String DELETE_USER = "DELETE FROM paymybuddy_prod.users where id=?";
-    public static final String GET_ALL_USERS = "SELECT * FROM paymybuddy_prod.users";
+    public static final String SAVE_USER = "insert into users(first_name, last_name, email, balance, password) values(?,?,?,?,?)";
+    public static final String GET_USER = "SELECT * FROM users where id=?";
+    public static final String UPDATE_USER = "update users set first_name=?, last_name=?, email=?, balance=?, password=? where id=?";
+    public static final String DELETE_USER = "DELETE FROM users where id=?";
+    public static final String GET_ALL_USERS = "SELECT * FROM users";
 
-    public static final String SAVE_TRANSACTION = "insert into paymybuddy_prod.transactions(amount, id_user_sender, id_user_receiver, fees, id_description,type) values(?,?,?,?,?,?)";
-    public static final String GET_TRANSACTION = "SELECT * FROM paymybuddy_prod.transactions where id=?";
-    public static final String UPDATE_TRANSACTION = "update paymybuddy_prod.transactions set amount=?, id_user_sender=?, id_user_receiver=?, fees=?, id_description=? type=?, where id=?";
-    public static final String DELETE_TRANSACTION = "DELETE FROM paymybuddy_prod.transactions where id=?";
-    public static final String GET_ALL_TRANSACTIONS = "SELECT * FROM paymybuddy_prod.transactions";
+    public static final String SAVE_TRANSACTION = "insert into transactions(amount, id_user_sender, id_user_receiver, fees, id_description,type) values(?,?,?,?,?,?)";
+    public static final String GET_TRANSACTION = "SELECT * FROM transactions where id=?";
+    public static final String UPDATE_TRANSACTION = "update transactions set amount=?, id_user_sender=?, id_user_receiver=?, fees=?, id_description=? type=?, where id=?";
+    public static final String DELETE_TRANSACTION = "DELETE FROM transactions where id=?";
+    public static final String GET_ALL_TRANSACTIONS = "SELECT * FROM transactions";
 
-    public static final String SAVE_BANK_ACCOUNT = "insert into paymybuddy_prod.bank_account(id_user, swift, iban) values(?,?,?)";
-    public static final String GET_BANK_ACCOUNT = "SELECT * FROM paymybuddy_prod.bank_account where id=?";
-    public static final String UPDATE_BANK_ACCOUNT = "update paymybuddy_prod.bank_account set iban=?, swift=?, id_user=? where id=?";
-    public static final String DELETE_BANK_ACCOUNT = "DELETE FROM paymybuddy_prod.bank_account where id=?";
-    public static final String GET_ALL_BANK_ACCOUNT = "SELECT * FROM paymybuddy_prod.bank_account";
+    public static final String SAVE_BANK_ACCOUNT = "insert into bank_account(id_user, swift, iban) values(?,?,?)";
+    public static final String GET_BANK_ACCOUNT = "SELECT * FROM bank_account where id=?";
+    public static final String UPDATE_BANK_ACCOUNT = "update bank_account set iban=?, swift=?, id_user=? where id=?";
+    public static final String DELETE_BANK_ACCOUNT = "DELETE FROM bank_account where id=?";
+    public static final String GET_ALL_BANK_ACCOUNT = "SELECT * FROM bank_account";
 
-    public static final String SAVE_DESCRIPTION = "insert into paymybuddy_prod.descriptions(content) values(?)";
-    public static final String GET_DESCRIPTION ="SELECT * FROM paymybuddy_prod.descriptions where id=?";
-    public static final String UPDATE_DESCRIPTION = "update paymybuddy_prod.descriptions set content=? where id=?";
-    public static final String DELETE_DESCRIPTION ="DELETE FROM paymybuddy_prod.descriptions where id=?";
-    public static final String GET_ALL_DESCRIPTION ="SELECT * FROM paymybuddy_prod.descriptions" ;
+    public static final String SAVE_DESCRIPTION = "insert into descriptions(content) values(?)";
+    public static final String GET_DESCRIPTION ="SELECT * FROM descriptions where id=?";
+    public static final String UPDATE_DESCRIPTION = "update descriptions set content=? where id=?";
+    public static final String DELETE_DESCRIPTION ="DELETE FROM descriptions where id=?";
+    public static final String GET_ALL_DESCRIPTION ="SELECT * FROM descriptions" ;
 
-    public static final String SAVE_RELATIONSHIP = "insert into paymybuddy_prod.users_relationship (id_user_relating,id_user_related) values(?)";
-    public static final String GET_RELATIONSHIP ="SELECT * FROM paymybuddy_prod.users_relationship where id=?" ;
-    public static final String UPDATE_RELATIONSHIP = "update paymybuddy_prod.users_relationship set id_user_relating=? id_user_related=? date_creation=? where id=?";
-    public static final String DELETE_RELATIONSHIP = "DELETE FROM paymybuddy_prod.users_relationship where id=?";
-    public static final String GET_ALL_RELATIONSHIP = "SELECT * FROM paymybuddy_prod.users_relationship";
+    public static final String SAVE_RELATIONSHIP = "insert into users_relationship (id_user_relating,id_user_related) values(?)";
+    public static final String GET_RELATIONSHIP ="SELECT * FROM users_relationship where id=?" ;
+    public static final String UPDATE_RELATIONSHIP = "update users_relationship set id_user_relating=? id_user_related=? date_creation=? where id=?";
+    public static final String DELETE_RELATIONSHIP = "DELETE FROM users_relationship where id=?";
+    public static final String GET_ALL_RELATIONSHIP = "SELECT * FROM users_relationship";
 }
