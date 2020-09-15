@@ -117,7 +117,7 @@ public class TransactionControllerTest {
         when(transactionService.delete(2)).thenReturn(true);
 
         //THEN
-        mockMvc.perform(delete("/descriptions/2")
+        mockMvc.perform(delete("/transactions/2")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().is(200));
 

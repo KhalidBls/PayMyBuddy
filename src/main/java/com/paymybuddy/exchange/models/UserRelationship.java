@@ -1,15 +1,17 @@
 package com.paymybuddy.exchange.models;
 
+import java.sql.Timestamp;
+
 public class UserRelationship {
 
     private int id;
     private int idUserRelating;
     private int idUserRelated;
-    private long timestampOfCreation;
+    private Timestamp timestampOfCreation;
 
     public UserRelationship(){}
 
-    public UserRelationship(int idUserRelating, int idUserRelated, long timestampOfCreation) {
+    public UserRelationship(int idUserRelating, int idUserRelated, Timestamp timestampOfCreation) {
         this.idUserRelating = idUserRelating;
         this.idUserRelated = idUserRelated;
         this.timestampOfCreation = timestampOfCreation;
@@ -44,11 +46,11 @@ public class UserRelationship {
         this.idUserRelated = idUserRelated;
     }
 
-    public long getTimestampOfCreation() {
+    public Timestamp getTimestampOfCreation() {
         return timestampOfCreation;
     }
 
-    public void setTimestampOfCreation(long timestampOfCreation) {
+    public void setTimestampOfCreation(Timestamp timestampOfCreation) {
         this.timestampOfCreation = timestampOfCreation;
     }
 }

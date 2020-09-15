@@ -26,9 +26,9 @@ public class DBConstants {
     public static final String DELETE_DESCRIPTION ="DELETE FROM descriptions where id=?";
     public static final String GET_ALL_DESCRIPTION ="SELECT * FROM descriptions" ;
 
-    public static final String SAVE_RELATIONSHIP = "insert into users_relationship (id_user_relating,id_user_related) values(?)";
+    public static final String SAVE_RELATIONSHIP = "insert into users_relationship (id_user_relating,id_user_related) values(?,?)";
     public static final String GET_RELATIONSHIP ="SELECT * FROM users_relationship where id=?" ;
-    public static final String UPDATE_RELATIONSHIP = "update users_relationship set id_user_relating=? id_user_related=? date_creation=? where id=?";
+    public static final String UPDATE_RELATIONSHIP = "update users_relationship set id_user_relating=?, id_user_related=?, date_creation=? where id=?";
     public static final String DELETE_RELATIONSHIP = "DELETE FROM users_relationship where id=?";
     public static final String GET_ALL_RELATIONSHIP = "SELECT * FROM users_relationship";
 }

@@ -55,7 +55,7 @@ public class UserRelationshipDAO  implements DAO<UserRelationship>{
                 userRelationship.setId(rs.getInt("id"));
                 userRelationship.setIdUserRelating(rs.getInt("id_user_relating"));
                 userRelationship.setIdUserRelated(rs.getInt("id_user_related"));
-                userRelationship.setTimestampOfCreation(rs.getLong("date_creation"));
+                userRelationship.setTimestampOfCreation(rs.getTimestamp("date_creation"));
             }
         }catch (Exception e){
             e.printStackTrace();
@@ -77,7 +77,7 @@ public class UserRelationshipDAO  implements DAO<UserRelationship>{
             ps = con.prepareStatement(DBConstants.UPDATE_RELATIONSHIP);
             ps.setInt(1,userRelationship.getIdUserRelating());
             ps.setInt(2,userRelationship.getIdUserRelated());
-            ps.setLong(3,userRelationship.getTimestampOfCreation());
+            ps.setTimestamp(3,userRelationship.getTimestampOfCreation());
             ps.setInt(4,userRelationship.getId());
             ps.execute();
             con.commit();
@@ -132,7 +132,7 @@ public class UserRelationshipDAO  implements DAO<UserRelationship>{
                 userRelationship.setId(rs.getInt("id"));
                 userRelationship.setIdUserRelating(rs.getInt("id_user_relating"));
                 userRelationship.setIdUserRelated(rs.getInt("id_user_related"));
-                userRelationship.setTimestampOfCreation(rs.getLong("date_creation"));
+                userRelationship.setTimestampOfCreation(rs.getTimestamp("date_creation"));
                 allUserRelationship.add(userRelationship);
             }
         }catch (Exception e){
