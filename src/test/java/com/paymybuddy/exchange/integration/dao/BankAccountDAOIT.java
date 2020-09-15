@@ -8,6 +8,7 @@ import org.junit.Test;
 
 import java.sql.SQLException;
 
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class BankAccountDAOIT {
@@ -47,45 +48,43 @@ public class BankAccountDAOIT {
         //THEN
         assertTrue(ourBankAccount.getSwift().equals(bankAccount.getSwift()));
     }
-/*
-    @Test
-    public void testUpdateUserRelationship() throws SQLException {
-        dataBasePrepareService.clearDataBaseEntries();
-        userRelationshipDAO.dataBaseConfig = dataBaseTestConfig;
-        //GIVEN
-        UserRelationship relationship = new UserRelationship(1,11);
-        assertTrue(userRelationshipDAO.create(relationship));
-        int id = getUserRelationshipById(1,11).getId();
-        relationship.setId(id);
-        relationship.setTimestampOfCreation(getUserRelationshipById(1,11).getTimestampOfCreation());
 
-        relationship.setIdUserRelating(44);
+    @Test
+    public void testUpdateBankAccount() throws SQLException {
+        dataBasePrepareService.clearDataBaseEntries();
+        bankAccountDAO.dataBaseConfig = dataBaseTestConfig;
+        //GIVEN
+        BankAccount bankAccount = new BankAccount("FRBOUS","SGGP",1);
+        assertTrue(bankAccountDAO.create(bankAccount));
+        int id = getBankAccountByIdUser(1).getId();
+        bankAccount.setId(id);
+
+        bankAccount.setIban("je le change ici ");
 
         //WHEN
-        assertTrue(userRelationshipDAO.update(relationship));
+        assertTrue(bankAccountDAO.update(bankAccount));
 
         //THEN
-        assertTrue(userRelationshipDAO.read(id).getIdUserRelating() == 44);
+        assertTrue(bankAccountDAO.read(id).getIban().equals("je le change ici "));
     }
 
     @Test
     public void testDeleteUserRelationship() throws SQLException {
         dataBasePrepareService.clearDataBaseEntries();
-        userRelationshipDAO.dataBaseConfig = dataBaseTestConfig;
+        bankAccountDAO.dataBaseConfig = dataBaseTestConfig;
         //GIVEN
-        UserRelationship relationship = new UserRelationship(   3,33);
-        assertTrue(userRelationshipDAO.create(relationship));
-        int id = getUserRelationshipById(3,33).getId();
-        relationship.setId(id);
-        relationship.setTimestampOfCreation(getUserRelationshipById(3,33).getTimestampOfCreation());
+        BankAccount bankAccount = new BankAccount("FRBOUS","SGGP",1);
+        assertTrue(bankAccountDAO.create(bankAccount));
+        int id = getBankAccountByIdUser(1).getId();
+        bankAccount.setId(id);
 
         //WHEN
-        assertTrue(userRelationshipDAO.delete(id));
+        assertTrue(bankAccountDAO.delete(id));
 
         //THEN
-        assertNull(getUserRelationshipById(3,33));
+        assertNull(getBankAccountByIdUser(1));
     }
-    */
+
     private BankAccount getBankAccountByIdUser(int idUser){
         for (BankAccount bankaccount: bankAccountDAO.listAll()) {
             if(bankaccount.getIdUser() == idUser)
