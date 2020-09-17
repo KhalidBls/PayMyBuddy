@@ -87,7 +87,7 @@ public class UserRelationshipDAOIT {
     }
 
 
-    public UserRelationship getUserRelationshipById(int id1,int id2) {
+    private UserRelationship getUserRelationshipById(int id1,int id2) {
         for (UserRelationship relationship : userRelationshipDAO.listAll()) {
             if (relationship.getIdUserRelating() == id1 && relationship.getIdUserRelated() == id2)
                 return relationship;

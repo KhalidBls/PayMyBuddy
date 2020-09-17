@@ -25,11 +25,15 @@ public class UserService {
 
 
     public boolean update(User userUpdated) throws SQLException {
-        return DAOFactory.getUserDAO().update(userUpdated);
+        if(getUserByName(userUpdated.getFirstName(),userUpdated.getLastName()) != null)
+            return DAOFactory.getUserDAO().update(userUpdated);
+        return false;
     }
 
     public boolean delete(int id) throws SQLException {
-        return DAOFactory.getUserDAO().delete(id);
+        if(read(id) != null)
+            return DAOFactory.getUserDAO().delete(id);
+        return false;
     }
 
     public User getUserByName(String firstName,String lastName){

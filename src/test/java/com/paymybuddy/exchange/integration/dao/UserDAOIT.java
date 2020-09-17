@@ -5,10 +5,11 @@ import com.paymybuddy.exchange.integration.config.DataBaseTestConfig;
 import com.paymybuddy.exchange.integration.services.DataBasePrepareService;
 import com.paymybuddy.exchange.models.User;
 import java.sql.SQLException;
+
+import org.apache.ibatis.scripting.xmltags.WhereSqlNode;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class UserDAOIT {
 
@@ -86,7 +87,7 @@ public class UserDAOIT {
 
 
 
-    public User getUserByName(String firstName,String lastName){
+    private User getUserByName(String firstName,String lastName){
         for (User user : userDAO.listAll()) {
             if (user.getFirstName().equals(firstName) && user.getLastName().equals(lastName))
                 return user;

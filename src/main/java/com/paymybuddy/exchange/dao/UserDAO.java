@@ -136,25 +136,25 @@ public class UserDAO implements DAO<User> {
 
     @Override
     public boolean delete(int id) throws SQLException {
-        Connection con = null;
-        PreparedStatement ps=null;
-        try {
-            con = dataBaseConfig.getConnection();
-            con.setAutoCommit(false);
-            ps = con.prepareStatement(DBConstants.DELETE_USER);
-            ps.setInt(1,id);
-            ps.executeUpdate();
-            con.commit();
-        }catch (Exception e){
-            e.printStackTrace();
-            con.rollback();
-            return false;
-        }finally {
-            con.setAutoCommit(true);
-            dataBaseConfig.closePreparedStatement(ps);
-            dataBaseConfig.closeConnection(con);
-            return true;
-        }
+            Connection con = null;
+            PreparedStatement ps = null;
+            try {
+                con = dataBaseConfig.getConnection();
+                con.setAutoCommit(false);
+                ps = con.prepareStatement(DBConstants.DELETE_USER);
+                ps.setInt(1, id);
+                ps.executeUpdate();
+                con.commit();
+            } catch (Exception e) {
+                e.printStackTrace();
+                con.rollback();
+                return false;
+            } finally {
+                con.setAutoCommit(true);
+                dataBaseConfig.closePreparedStatement(ps);
+                dataBaseConfig.closeConnection(con);
+                return true;
+            }
     }
 
 }

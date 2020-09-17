@@ -16,6 +16,7 @@ public class TransactionService {
     @Autowired
     UserRelationshipService userRelationshipService;
 
+
     public boolean create(Transaction transaction) throws SQLException {
         if(DAOFactory.getTransactionDAO().create(transaction)){
             makeTransaction(transaction.getIdUserSender(),transaction.getIdUserReceiver(),transaction.getAmount(),transaction);

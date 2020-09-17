@@ -29,8 +29,7 @@ public class TransactionDAO implements DAO<Transaction> {
             ps.setInt(3,transaction.getIdUserReceiver());
             ps.setDouble(4,transaction.getFees());
             ps.setInt(5,transaction.getIdDescription());
-            ps.setString(6,transaction.getType().toString());
-            ps.setInt(7,transaction.getId());
+            ps.setString(6,transaction.getType());
             ps.execute();
             con.commit();
         }catch (Exception e){
@@ -145,8 +144,8 @@ public class TransactionDAO implements DAO<Transaction> {
                 transaction = new Transaction();
                 transaction.setId(rs.getInt("id"));
                 transaction.setAmount(rs.getDouble("amount"));
-                transaction.setIdUserSender(rs.getInt("user_sender"));
-                transaction.setIdUserReceiver(rs.getInt("user_receiver"));
+                transaction.setIdUserSender(rs.getInt("id_user_sender"));
+                transaction.setIdUserReceiver(rs.getInt("id_user_receiver"));
                 transaction.setFees(rs.getDouble("fees"));
                 transaction.setIdDescription(rs.getInt("id_description"));
                 transaction.setType(rs.getString("type"));
