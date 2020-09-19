@@ -31,9 +31,7 @@ public class UserService {
     }
 
     public boolean delete(int id) throws SQLException {
-        if(read(id) != null)
             return DAOFactory.getUserDAO().delete(id);
-        return false;
     }
 
     public User getUserByName(String firstName,String lastName){

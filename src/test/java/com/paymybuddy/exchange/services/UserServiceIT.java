@@ -41,7 +41,7 @@ public class UserServiceIT {
     }
 
     @Test
-    public void testReadUserExistingShouldReturnTrue() throws SQLException {
+    public void testReadUser() throws SQLException {
         dataBasePrepareService.clearDataBaseEntries();
         userDAO.dataBaseConfig = dataBaseTestConfig;
         //given
@@ -56,7 +56,71 @@ public class UserServiceIT {
         assertTrue(userService.read(id).getEmail().equals(user.getEmail()));
     }
 
+    @Test
+    public void testUpdateUserWhenExistingShouldReturnTrue() throws SQLException {
+        dataBasePrepareService.clearDataBaseEntries();
+        userDAO.dataBaseConfig = dataBaseTestConfig;
+        //GIVEN
+        User user = new User("test","DuReadService","autre@mail.com",12.0,"je fais un test du update");
+        mockStatic(DAOFactory.class);
+        PowerMockito.when(DAOFactory.getUserDAO()).thenReturn(userDAO);
+        assertTrue(userService.create(user));
+        int id = getUserByName("test","DuReadService").getId();
+        user.setId(id);
+        user.setPassword("Je met à jour ici");
 
+        //WHEN
+        assertTrue(userService.update(user));
+
+        //THEN
+        assertTrue(userService.read(id).getPassword().equals(user.getPassword()));
+
+    }
+
+    @Test
+    public void testUpdateWhenNotUserExistingShouldReturnFalse() throws SQLException {
+        User user = new User("test","DuReadService","autre@mail.com",12.0,"je fais un test du update");
+        mockStatic(DAOFactory.class);
+        PowerMockito.when(DAOFactory.getUserDAO()).thenReturn(userDAO);
+
+
+        assertFalse(userService.update(user));
+    }
+
+    @Test
+    public void testDeleteUserWhenExistingShouldReturnTrue() throws SQLException {
+        dataBasePrepareService.clearDataBaseEntries();
+        userDAO.dataBaseConfig = dataBaseTestConfig;
+        //GIVEN
+        User user = new User("test","DuDeleteService","autre@mail.com",12.0,"je fais un test du update");
+        mockStatic(DAOFactory.class);
+        PowerMockito.when(DAOFactory.getUserDAO()).thenReturn(userDAO);
+        assertTrue(userService.create(user));
+        int id = getUserByName("test","DuDeleteService").getId();
+        user.setId(id);
+        user.setPassword("Je met à jour ici");
+
+        //WHEN
+        assertTrue(userService.delete(id));
+
+        //THEN
+        assertNull(getUserByName("test","DuDeleteService"));
+    }
+
+    @Test
+    public void testGetUserByNameWhenExisting() throws SQLException {
+        //GIVEN
+        User user = new User("test","DuDeleteService","autre@mail.com",12.0,"je fais un test du update");
+        mockStatic(DAOFactory.class);
+        PowerMockito.when(DAOFactory.getUserDAO()).thenReturn(userDAO);
+        User user1 = new User("test","du get alllll","autre@mail.com",12.0,"autre chose");
+        assertTrue(userService.create(user));
+        assertTrue(userService.create(user1));
+
+        assertTrue(userService.getUserByName("test","DuDeleteService").getPassword().equals("je fais un test du update"));
+        assertTrue(userService.getUserByName("test","du get alllll").getPassword().equals("autre chose"));
+
+    }
 
     private User getUserByName(String firstName,String lastName){
         for (User user : userDAO.listAll()) {
