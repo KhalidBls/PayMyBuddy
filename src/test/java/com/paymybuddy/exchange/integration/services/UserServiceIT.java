@@ -1,10 +1,11 @@
-package com.paymybuddy.exchange.services;
+package com.paymybuddy.exchange.integration.services;
 
 import com.paymybuddy.exchange.dao.DAOFactory;
 import com.paymybuddy.exchange.dao.UserDAO;
 import com.paymybuddy.exchange.integration.config.DataBaseTestConfig;
 import com.paymybuddy.exchange.integration.services.DataBasePrepareService;
 import com.paymybuddy.exchange.models.User;
+import com.paymybuddy.exchange.services.UserService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.powermock.api.mockito.PowerMockito;
