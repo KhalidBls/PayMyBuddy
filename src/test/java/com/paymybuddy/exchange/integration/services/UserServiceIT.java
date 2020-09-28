@@ -80,6 +80,8 @@ public class UserServiceIT {
 
     @Test
     public void testUpdateWhenNotUserExistingShouldReturnFalse() throws SQLException {
+        dataBasePrepareService.clearDataBaseEntries();
+        userDAO.dataBaseConfig = dataBaseTestConfig;
         User user = new User("test","DuReadService","autre@mail.com",12.0,"je fais un test du update");
         mockStatic(DAOFactory.class);
         PowerMockito.when(DAOFactory.getUserDAO()).thenReturn(userDAO);
@@ -122,6 +124,9 @@ public class UserServiceIT {
         assertTrue(userService.getUserByName("test","du get alllll").getPassword().equals("autre chose"));
 
     }
+
+
+
 
     private User getUserByName(String firstName,String lastName){
         for (User user : userDAO.listAll()) {

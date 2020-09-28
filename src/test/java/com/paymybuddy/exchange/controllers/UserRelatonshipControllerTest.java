@@ -1,20 +1,20 @@
 package com.paymybuddy.exchange.controllers;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.paymybuddy.exchange.models.Transaction;
 import com.paymybuddy.exchange.models.UserRelationship;
 import com.paymybuddy.exchange.services.UserRelationshipService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.mock.web.MockHttpServletRequest;
+import org.springframework.security.web.csrf.CsrfToken;
+import org.springframework.security.web.csrf.HttpSessionCsrfTokenRepository;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
-
-import java.sql.SQLException;
 import java.util.Arrays;
 
 import static org.hamcrest.Matchers.hasSize;
@@ -27,6 +27,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @WebMvcTest(UserRelationshipController.class)
 @RunWith(SpringRunner.class)
+@AutoConfigureMockMvc(addFilters = false)
 public class UserRelatonshipControllerTest {
 
     @Autowired
@@ -37,6 +38,9 @@ public class UserRelatonshipControllerTest {
 
     @Test
     public void testCreateRelationship() throws Exception {
+        String TOKEN_ATTR_NAME = "org.springframework.security.web.csrf.HttpSessionCsrfTokenRepository.CSRF_TOKEN";
+        HttpSessionCsrfTokenRepository httpSessionCsrfTokenRepository = new HttpSessionCsrfTokenRepository();
+        CsrfToken csrfToken = httpSessionCsrfTokenRepository.generateToken(new MockHttpServletRequest());
         //GIVEN
         UserRelationship userRelationship;
 
@@ -54,6 +58,8 @@ public class UserRelatonshipControllerTest {
 
         //THEN
         mockMvc.perform(post("/relationships")
+                .sessionAttr(TOKEN_ATTR_NAME, csrfToken)
+                .param(csrfToken.getParameterName(), csrfToken.getToken())
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(relationshipJSON))
                 .andExpect(status().is(201));
@@ -80,6 +86,9 @@ public class UserRelatonshipControllerTest {
 
     @Test
     public void testUpdateRelationships() throws Exception {
+        String TOKEN_ATTR_NAME = "org.springframework.security.web.csrf.HttpSessionCsrfTokenRepository.CSRF_TOKEN";
+        HttpSessionCsrfTokenRepository httpSessionCsrfTokenRepository = new HttpSessionCsrfTokenRepository();
+        CsrfToken csrfToken = httpSessionCsrfTokenRepository.generateToken(new MockHttpServletRequest());
         //GIVEN
         UserRelationship userRelationship = new UserRelationship(2,7);
         userRelationship.setId(2);
@@ -98,6 +107,8 @@ public class UserRelatonshipControllerTest {
 
         //THEN
         mockMvc.perform(put("/relationships/2")
+                .sessionAttr(TOKEN_ATTR_NAME, csrfToken)
+                .param(csrfToken.getParameterName(), csrfToken.getToken())
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(relationshipJSON))
                 .andExpect(status().is(200));
@@ -108,6 +119,9 @@ public class UserRelatonshipControllerTest {
 
     @Test
     public void testDeleteRelationships() throws Exception {
+        String TOKEN_ATTR_NAME = "org.springframework.security.web.csrf.HttpSessionCsrfTokenRepository.CSRF_TOKEN";
+        HttpSessionCsrfTokenRepository httpSessionCsrfTokenRepository = new HttpSessionCsrfTokenRepository();
+        CsrfToken csrfToken = httpSessionCsrfTokenRepository.generateToken(new MockHttpServletRequest());
         //GIVEN
         UserRelationship userRelationship = new UserRelationship(2,7);
         userRelationship.setId(2);
@@ -117,6 +131,8 @@ public class UserRelatonshipControllerTest {
 
         //THEN
         mockMvc.perform(delete("/relationships/2")
+                .sessionAttr(TOKEN_ATTR_NAME, csrfToken)
+                .param(csrfToken.getParameterName(), csrfToken.getToken())
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().is(200));
 

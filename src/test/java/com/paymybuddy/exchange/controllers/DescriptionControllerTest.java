@@ -7,9 +7,13 @@ import com.paymybuddy.exchange.services.DescriptionService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.mock.web.MockHttpServletRequest;
+import org.springframework.security.web.csrf.CsrfToken;
+import org.springframework.security.web.csrf.HttpSessionCsrfTokenRepository;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -26,6 +30,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @WebMvcTest(DescriptionController.class)
 @RunWith(SpringRunner.class)
+@AutoConfigureMockMvc(addFilters = false)
 public class DescriptionControllerTest {
 
     @Autowired
@@ -36,6 +41,9 @@ public class DescriptionControllerTest {
 
     @Test
     public void testCreateDescription() throws Exception {
+        String TOKEN_ATTR_NAME = "org.springframework.security.web.csrf.HttpSessionCsrfTokenRepository.CSRF_TOKEN";
+        HttpSessionCsrfTokenRepository httpSessionCsrfTokenRepository = new HttpSessionCsrfTokenRepository();
+        CsrfToken csrfToken = httpSessionCsrfTokenRepository.generateToken(new MockHttpServletRequest());
         //GIVEN
         Description description;
 
@@ -51,6 +59,8 @@ public class DescriptionControllerTest {
 
         //THEN
         mockMvc.perform(post("/descriptions")
+                .sessionAttr(TOKEN_ATTR_NAME, csrfToken)
+                .param(csrfToken.getParameterName(), csrfToken.getToken())
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(bankAccountJSON))
                 .andExpect(status().is(201));
@@ -75,6 +85,9 @@ public class DescriptionControllerTest {
 
     @Test
     public void testUpdateDescription() throws Exception {
+        String TOKEN_ATTR_NAME = "org.springframework.security.web.csrf.HttpSessionCsrfTokenRepository.CSRF_TOKEN";
+        HttpSessionCsrfTokenRepository httpSessionCsrfTokenRepository = new HttpSessionCsrfTokenRepository();
+        CsrfToken csrfToken = httpSessionCsrfTokenRepository.generateToken(new MockHttpServletRequest());
         //GIVEN
         Description description = new Description("mon contenu");
         description.setId(2);
@@ -89,6 +102,8 @@ public class DescriptionControllerTest {
 
         //THEN
         mockMvc.perform(put("/descriptions/2")
+                .sessionAttr(TOKEN_ATTR_NAME, csrfToken)
+                .param(csrfToken.getParameterName(), csrfToken.getToken())
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(userJSON))
                 .andExpect(status().is(200));
@@ -99,6 +114,9 @@ public class DescriptionControllerTest {
 
     @Test
     public void testDeleteDescription() throws Exception {
+        String TOKEN_ATTR_NAME = "org.springframework.security.web.csrf.HttpSessionCsrfTokenRepository.CSRF_TOKEN";
+        HttpSessionCsrfTokenRepository httpSessionCsrfTokenRepository = new HttpSessionCsrfTokenRepository();
+        CsrfToken csrfToken = httpSessionCsrfTokenRepository.generateToken(new MockHttpServletRequest());
         //GIVEN
         Description description = new Description("mon contenu");
         description.setId(2);
@@ -107,6 +125,8 @@ public class DescriptionControllerTest {
         when(descriptionService.delete(2)).thenReturn(true);
         //THEN
         mockMvc.perform(delete("/descriptions/2")
+                .sessionAttr(TOKEN_ATTR_NAME, csrfToken)
+                .param(csrfToken.getParameterName(), csrfToken.getToken())
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().is(200));
 

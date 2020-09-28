@@ -6,9 +6,14 @@ import com.paymybuddy.exchange.services.UserService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.mock.web.MockHttpServletRequest;
+import org.springframework.security.test.context.support.WithUserDetails;
+import org.springframework.security.web.csrf.CsrfToken;
+import org.springframework.security.web.csrf.HttpSessionCsrfTokenRepository;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -26,6 +31,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @WebMvcTest(UserController.class)
 @RunWith(SpringRunner.class)
+@AutoConfigureMockMvc(addFilters = false)
 public class UserControllerTest {
 
     @Autowired
@@ -36,6 +42,9 @@ public class UserControllerTest {
 
     @Test
     public void testCreateUser() throws Exception {
+        String TOKEN_ATTR_NAME = "org.springframework.security.web.csrf.HttpSessionCsrfTokenRepository.CSRF_TOKEN";
+        HttpSessionCsrfTokenRepository httpSessionCsrfTokenRepository = new HttpSessionCsrfTokenRepository();
+        CsrfToken csrfToken = httpSessionCsrfTokenRepository.generateToken(new MockHttpServletRequest());
         //ARRANGE
         User user;
         ObjectMapper mapper = new ObjectMapper();
@@ -54,6 +63,8 @@ public class UserControllerTest {
 
         //ASSERT
         mockMvc.perform(post("/users")
+                .sessionAttr(TOKEN_ATTR_NAME, csrfToken)
+                .param(csrfToken.getParameterName(), csrfToken.getToken())
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(userJSON))
                 .andExpect(status().is(201));
@@ -63,6 +74,7 @@ public class UserControllerTest {
 
     @Test
     public void testGetUserById() throws Exception {
+
         //ARRANGE
         User user = new User("bob","bobby","bob@mail.com",12.0,"bobpass");
         user.setId(77);
@@ -85,6 +97,9 @@ public class UserControllerTest {
 
     @Test
     public void testUpdateUser() throws Exception {
+        String TOKEN_ATTR_NAME = "org.springframework.security.web.csrf.HttpSessionCsrfTokenRepository.CSRF_TOKEN";
+        HttpSessionCsrfTokenRepository httpSessionCsrfTokenRepository = new HttpSessionCsrfTokenRepository();
+        CsrfToken csrfToken = httpSessionCsrfTokenRepository.generateToken(new MockHttpServletRequest());
         //GIVEN
         User user = new User("bob","bobby","bob@mail.com",12.0,"bobpass");
         user.setId(77);
@@ -103,6 +118,8 @@ public class UserControllerTest {
 
         //THEN
         mockMvc.perform(put("/users/77")
+                .sessionAttr(TOKEN_ATTR_NAME, csrfToken)
+                .param(csrfToken.getParameterName(), csrfToken.getToken())
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(userJSON))
                 .andExpect(status().is(200));
@@ -113,6 +130,9 @@ public class UserControllerTest {
 
     @Test
     public void testDeleteUser() throws Exception {
+        String TOKEN_ATTR_NAME = "org.springframework.security.web.csrf.HttpSessionCsrfTokenRepository.CSRF_TOKEN";
+        HttpSessionCsrfTokenRepository httpSessionCsrfTokenRepository = new HttpSessionCsrfTokenRepository();
+        CsrfToken csrfToken = httpSessionCsrfTokenRepository.generateToken(new MockHttpServletRequest());
         //GIVEN
         User user = new User("bob","bobby","bob@mail.com",12.0,"bobpass");
         user.setId(77);
@@ -121,6 +141,8 @@ public class UserControllerTest {
         when(userService.delete(77)).thenReturn(true);
         //THEN
         mockMvc.perform(delete("/users/77")
+                .sessionAttr(TOKEN_ATTR_NAME, csrfToken)
+                .param(csrfToken.getParameterName(), csrfToken.getToken())
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().is(200));
 

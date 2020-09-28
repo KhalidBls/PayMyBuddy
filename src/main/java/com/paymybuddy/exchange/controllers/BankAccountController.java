@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import javax.annotation.security.RolesAllowed;
 import java.net.URI;
 import java.sql.SQLException;
 import java.util.List;
@@ -18,6 +19,7 @@ public class BankAccountController {
     BankAccountService bankAccountService;
 
     @PostMapping("/bankAccounts")
+    @RolesAllowed("ADMIN")
     public ResponseEntity<Void> createBankAccount(@RequestBody BankAccount bankAccount) throws SQLException {
         boolean created = bankAccountService.create(bankAccount);
 
@@ -38,16 +40,19 @@ public class BankAccountController {
     }
 
     @GetMapping("/bankAccounts/{id}")
+    @RolesAllowed("USER")
     public BankAccount getBankAccountById(@PathVariable int id){
         return bankAccountService.read(id);
     }
 
     @GetMapping("/bankAccounts")
+    @RolesAllowed("ADMIN")
     public List<BankAccount> getAllBankAccounts(){
         return bankAccountService.listAll();
     }
 
     @PutMapping("/bankAccounts/{id}")
+    @RolesAllowed("ADMIN")
     public BankAccount updateBankAccount(@PathVariable int id) throws SQLException {
         BankAccount bankAccountUpdated = bankAccountService.read(id);
         if (bankAccountUpdated!=null)
@@ -57,6 +62,7 @@ public class BankAccountController {
     }
 
     @DeleteMapping("/bankAccounts/{id}")
+    @RolesAllowed("ADMIN")
     public List<BankAccount> deleteBankAccountsById(@PathVariable int id) throws SQLException {
         bankAccountService.delete(id);
         return getAllBankAccounts();

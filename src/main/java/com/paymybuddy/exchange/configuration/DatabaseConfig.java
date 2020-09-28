@@ -1,4 +1,4 @@
-package com.paymybuddy.exchange.config;
+package com.paymybuddy.exchange.configuration;
 
 import org.apache.ibatis.jdbc.ScriptRunner;
 

@@ -6,9 +6,13 @@ import com.paymybuddy.exchange.services.TransactionService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.mock.web.MockHttpServletRequest;
+import org.springframework.security.web.csrf.CsrfToken;
+import org.springframework.security.web.csrf.HttpSessionCsrfTokenRepository;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -24,6 +28,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @WebMvcTest(TransactionController.class)
 @RunWith(SpringRunner.class)
+@AutoConfigureMockMvc(addFilters = false)
 public class TransactionControllerTest {
 
     @Autowired
@@ -34,6 +39,9 @@ public class TransactionControllerTest {
 
     @Test
     public void testCreateTransaction() throws Exception {
+        String TOKEN_ATTR_NAME = "org.springframework.security.web.csrf.HttpSessionCsrfTokenRepository.CSRF_TOKEN";
+        HttpSessionCsrfTokenRepository httpSessionCsrfTokenRepository = new HttpSessionCsrfTokenRepository();
+        CsrfToken csrfToken = httpSessionCsrfTokenRepository.generateToken(new MockHttpServletRequest());
         //GIVEN
         Transaction transaction;
 
@@ -53,6 +61,8 @@ public class TransactionControllerTest {
 
         //THEN
         mockMvc.perform(post("/transactions")
+                .sessionAttr(TOKEN_ATTR_NAME, csrfToken)
+                .param(csrfToken.getParameterName(), csrfToken.getToken())
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(transactionJSON))
                 .andExpect(status().is(201));
@@ -81,6 +91,9 @@ public class TransactionControllerTest {
 
     @Test
     public void testUpdateDescription() throws Exception {
+        String TOKEN_ATTR_NAME = "org.springframework.security.web.csrf.HttpSessionCsrfTokenRepository.CSRF_TOKEN";
+        HttpSessionCsrfTokenRepository httpSessionCsrfTokenRepository = new HttpSessionCsrfTokenRepository();
+        CsrfToken csrfToken = httpSessionCsrfTokenRepository.generateToken(new MockHttpServletRequest());
         //GIVEN
         Transaction transaction = new Transaction( 12.8, 4, 1, 2, "Remboursement");
         transaction.setId(2);
@@ -99,6 +112,8 @@ public class TransactionControllerTest {
 
         //THEN
         mockMvc.perform(put("/transactions/2")
+                .sessionAttr(TOKEN_ATTR_NAME, csrfToken)
+                .param(csrfToken.getParameterName(), csrfToken.getToken())
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(transactionJSON))
                 .andExpect(status().is(200));
@@ -109,6 +124,9 @@ public class TransactionControllerTest {
 
     @Test
     public void testDeleteTransaction() throws Exception {
+        String TOKEN_ATTR_NAME = "org.springframework.security.web.csrf.HttpSessionCsrfTokenRepository.CSRF_TOKEN";
+        HttpSessionCsrfTokenRepository httpSessionCsrfTokenRepository = new HttpSessionCsrfTokenRepository();
+        CsrfToken csrfToken = httpSessionCsrfTokenRepository.generateToken(new MockHttpServletRequest());
         //GIVEN
         Transaction transaction = new Transaction( 12.8, 4, 1, 2, "Remboursement");
         transaction.setId(2);
@@ -118,6 +136,8 @@ public class TransactionControllerTest {
 
         //THEN
         mockMvc.perform(delete("/transactions/2")
+                .sessionAttr(TOKEN_ATTR_NAME, csrfToken)
+                .param(csrfToken.getParameterName(), csrfToken.getToken())
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().is(200));
 

@@ -2,14 +2,22 @@ package com.paymybuddy.exchange.controllers;
 
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.paymybuddy.exchange.configuration.SpringSecurityConfig;
 import com.paymybuddy.exchange.models.BankAccount;
 import com.paymybuddy.exchange.services.BankAccountService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.mock.web.MockHttpServletRequest;
+import org.springframework.security.web.csrf.CsrfToken;
+import org.springframework.security.web.csrf.HttpSessionCsrfTokenRepository;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -25,6 +33,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @WebMvcTest(BankAccountController.class)
 @RunWith(SpringRunner.class)
+@AutoConfigureMockMvc(addFilters = false)
 public class BankAccountControllerTest {
 
     @Autowired
@@ -35,6 +44,9 @@ public class BankAccountControllerTest {
 
     @Test
     public void testCreateBankAccount() throws Exception {
+        String TOKEN_ATTR_NAME = "org.springframework.security.web.csrf.HttpSessionCsrfTokenRepository.CSRF_TOKEN";
+        HttpSessionCsrfTokenRepository httpSessionCsrfTokenRepository = new HttpSessionCsrfTokenRepository();
+        CsrfToken csrfToken = httpSessionCsrfTokenRepository.generateToken(new MockHttpServletRequest());
         //GIVEN
         BankAccount bankAccount;
 
@@ -53,6 +65,8 @@ public class BankAccountControllerTest {
 
         //THEN
         mockMvc.perform(post("/bankAccounts")
+                .sessionAttr(TOKEN_ATTR_NAME, csrfToken)
+                .param(csrfToken.getParameterName(), csrfToken.getToken())
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(bankAccountJSON))
                 .andExpect(status().is(201));
@@ -78,6 +92,9 @@ public class BankAccountControllerTest {
 
     @Test
     public void testUpdateBankAccount() throws Exception {
+        String TOKEN_ATTR_NAME = "org.springframework.security.web.csrf.HttpSessionCsrfTokenRepository.CSRF_TOKEN";
+        HttpSessionCsrfTokenRepository httpSessionCsrfTokenRepository = new HttpSessionCsrfTokenRepository();
+        CsrfToken csrfToken = httpSessionCsrfTokenRepository.generateToken(new MockHttpServletRequest());
         //GIVEN
         BankAccount bankAccount = new BankAccount("FR760012345","BOUSSS",2);
         bankAccount.setId(2);
@@ -94,6 +111,8 @@ public class BankAccountControllerTest {
 
         //THEN
         mockMvc.perform(put("/bankAccounts/2")
+                .sessionAttr(TOKEN_ATTR_NAME, csrfToken)
+                .param(csrfToken.getParameterName(), csrfToken.getToken())
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(userJSON))
                 .andExpect(status().is(200));
@@ -104,6 +123,9 @@ public class BankAccountControllerTest {
 
     @Test
     public void testDeleteBankAccount() throws Exception {
+        String TOKEN_ATTR_NAME = "org.springframework.security.web.csrf.HttpSessionCsrfTokenRepository.CSRF_TOKEN";
+        HttpSessionCsrfTokenRepository httpSessionCsrfTokenRepository = new HttpSessionCsrfTokenRepository();
+        CsrfToken csrfToken = httpSessionCsrfTokenRepository.generateToken(new MockHttpServletRequest());
         //GIVEN
         BankAccount bankAccount = new BankAccount("FR760012345","BOUSSS",2);
         bankAccount.setId(2);
@@ -112,6 +134,8 @@ public class BankAccountControllerTest {
         when(bankAccountService.delete(2)).thenReturn(true);
         //THEN
         mockMvc.perform(delete("/bankAccounts/2")
+                .sessionAttr(TOKEN_ATTR_NAME, csrfToken)
+                .param(csrfToken.getParameterName(), csrfToken.getToken())
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().is(200));
 

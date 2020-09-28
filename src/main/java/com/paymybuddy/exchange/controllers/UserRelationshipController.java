@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import javax.annotation.security.RolesAllowed;
 import java.net.URI;
 import java.sql.SQLException;
 import java.util.List;
@@ -18,6 +19,7 @@ public class UserRelationshipController {
     UserRelationshipService userRelationshipService;
 
     @PostMapping("/relationships")
+    @RolesAllowed("USER")
     public ResponseEntity<Void> createRelationship(@RequestBody UserRelationship userRelationship) throws SQLException {
 
         if (userRelationshipService.verifyRelationship(userRelationship.getIdUserRelating(),userRelationship.getIdUserRelated()))
@@ -42,6 +44,7 @@ public class UserRelationshipController {
     }
 
     @GetMapping("/relationships/{id}")
+    @RolesAllowed("USER")
     public UserRelationship getRelationshipById(@PathVariable int id){
         return userRelationshipService.read(id);
     }
@@ -52,6 +55,7 @@ public class UserRelationshipController {
     }
 
     @PutMapping("/relationships/{id}")
+    @RolesAllowed("USER")
     public UserRelationship updateRelationship(@PathVariable int id) throws SQLException {
         UserRelationship userRelationshipUpdated = userRelationshipService.read(id);
         if (userRelationshipUpdated!=null)
@@ -61,6 +65,7 @@ public class UserRelationshipController {
     }
 
     @DeleteMapping("/relationships/{id}")
+    @RolesAllowed("USER")
     public List<UserRelationship> deleteRelationship(@PathVariable int id) throws SQLException {
         userRelationshipService.delete(id);
         return getAllRelationship();

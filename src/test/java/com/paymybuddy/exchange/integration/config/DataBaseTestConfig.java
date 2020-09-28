@@ -1,6 +1,6 @@
 package com.paymybuddy.exchange.integration.config;
 
-import com.paymybuddy.exchange.config.DatabaseConfig;
+import com.paymybuddy.exchange.configuration.DatabaseConfig;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -14,7 +14,7 @@ public class DataBaseTestConfig extends DatabaseConfig {
         logger.info("Create DB connection");
         Class.forName("com.mysql.cj.jdbc.Driver");
         return DriverManager.getConnection(
-                "jdbc:mysql://localhost:3308/paymybuddy_test?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC","root","");
+                "jdbc:mysql://localhost:3308/paymybuddy_test?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC","root","rootroot");
     }
 
     public void closeConnection(Connection con){

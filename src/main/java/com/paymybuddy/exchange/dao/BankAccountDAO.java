@@ -1,6 +1,6 @@
 package com.paymybuddy.exchange.dao;
 
-import com.paymybuddy.exchange.config.DatabaseConfig;
+import com.paymybuddy.exchange.configuration.DatabaseConfig;
 import com.paymybuddy.exchange.constants.DBConstants;
 import com.paymybuddy.exchange.models.BankAccount;
 
