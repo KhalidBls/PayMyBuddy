@@ -19,10 +19,9 @@ public class UserRelationshipController {
     UserRelationshipService userRelationshipService;
 
     @PostMapping("/relationships")
-    @RolesAllowed("USER")
     public ResponseEntity<Void> createRelationship(@RequestBody UserRelationship userRelationship) throws SQLException {
 
-        if (userRelationshipService.verifyRelationship(userRelationship.getIdUserRelating(),userRelationship.getIdUserRelated()))
+        if (userRelationshipService.verifyRelationship(userRelationship.getIdUserRelating(),userRelationship.getIdUserRelated())!=null)
             return ResponseEntity.noContent().build();
 
         boolean created = userRelationshipService.create(userRelationship);
@@ -30,6 +29,7 @@ public class UserRelationshipController {
         if (created == false)
             return ResponseEntity.noContent().build();
 
+        userRelationship.setId(userRelationshipService.verifyRelationship(userRelationship.getIdUserRelating(),userRelationship.getIdUserRelated()).getId());
         UserRelationship ourUserRelationship = userRelationshipService.read(userRelationship.getId());
         if (ourUserRelationship == null)
             return ResponseEntity.noContent().build();

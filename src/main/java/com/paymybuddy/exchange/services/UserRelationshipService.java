@@ -30,14 +30,14 @@ public class UserRelationshipService {
         return DAOFactory.getUserRelationshipDAO().listAll();
     }
 
-    public boolean verifyRelationship(int idUserRelating,int idUserRelated){
+    public UserRelationship verifyRelationship(int idUserRelating,int idUserRelated){
         List<UserRelationship> allRelation = listAll();
         for (UserRelationship userRelationship : allRelation){
             if (userRelationship.getIdUserRelating() == idUserRelating
-                    && userRelationship.getIdUserRelated() == idUserRelated)
-                return true;
+                    && userRelationship.getIdUserRelated() == idUserRelated){
+                return userRelationship;}
         }
-        return false;
+        return null;
     }
 
 }

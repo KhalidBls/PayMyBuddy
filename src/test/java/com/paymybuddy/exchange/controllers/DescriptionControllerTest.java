@@ -56,6 +56,7 @@ public class DescriptionControllerTest {
         //WHEN
         when(descriptionService.create(any(Description.class))).thenReturn(true);
         when(descriptionService.read(any(Integer.class))).thenReturn(description);
+        when(descriptionService.getDescriptionByContent(any(String.class))).thenReturn(description);
 
         //THEN
         mockMvc.perform(post("/descriptions")

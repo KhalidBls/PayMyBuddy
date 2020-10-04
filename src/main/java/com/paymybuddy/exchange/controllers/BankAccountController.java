@@ -26,6 +26,8 @@ public class BankAccountController {
         if (created == false)
             return ResponseEntity.noContent().build();
 
+        bankAccount.setId(bankAccountService.getBankAccountByIdUser(bankAccount.getIdUser()).getId());
+
         BankAccount ourBankAccount = bankAccountService.read(bankAccount.getId());
         if (ourBankAccount == null)
             return ResponseEntity.noContent().build();

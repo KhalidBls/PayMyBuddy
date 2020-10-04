@@ -47,16 +47,16 @@ public class TransactionService {
     private boolean makeTransaction(Transaction transaction){
         try {
 
-            if(!userRelationshipService.verifyRelationship(transaction.getIdUserSender(),transaction.getIdUserReceiver()))
+            if(userRelationshipService.verifyRelationship(transaction.getIdUserSender(),transaction.getIdUserReceiver())==null)
                 throw new RelationshipException();
 
             User userSender = userService.read(transaction.getIdUserSender());
             User userReceiver = userService.read(transaction.getIdUserReceiver());
             transaction.setId(getTransactionByIdUserAndSender(transaction.getIdUserSender(),transaction.getIdUserReceiver()).getId());
 
-            double fees = transaction.getAmount() * 0.05;
-            userSender.setBalance(userSender.getBalance() - transaction.getAmount() - fees);
-            userReceiver.setBalance(userReceiver.getBalance() + transaction.getAmount());
+            double fees =  (double) Math.round((transaction.getAmount() * 0.05) * 100)/100;
+            userSender.setBalance((double) Math.round((userSender.getBalance() - transaction.getAmount() - fees)*100)/100);
+            userReceiver.setBalance((double) Math.round((userReceiver.getBalance() + transaction.getAmount())*100)/100);
             transaction.setFees(fees);
             userService.update(userSender);
             userService.update(userReceiver);
@@ -68,7 +68,7 @@ public class TransactionService {
         }
     }
 
-    private Transaction getTransactionByIdUserAndSender(int idUserSender, int idUserReceiver){
+    public Transaction getTransactionByIdUserAndSender(int idUserSender, int idUserReceiver){
         for (Transaction transaction: listAll()) {
             if (transaction.getIdUserSender()==idUserSender && transaction.getIdUserReceiver()==idUserReceiver)
                 return transaction;

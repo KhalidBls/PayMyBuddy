@@ -24,6 +24,7 @@ public class TransactionController {
         if (created == false)
             return ResponseEntity.noContent().build();
 
+        transaction.setId(transactionService.getTransactionByIdUserAndSender(transaction.getIdUserSender(),transaction.getIdUserReceiver()).getId());
         Transaction ourTransaction = transactionService.read(transaction.getId());
         if (ourTransaction == null)
             return ResponseEntity.noContent().build();

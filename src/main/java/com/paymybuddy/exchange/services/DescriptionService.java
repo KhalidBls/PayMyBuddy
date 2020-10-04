@@ -2,6 +2,7 @@ package com.paymybuddy.exchange.services;
 
 import com.paymybuddy.exchange.dao.DAOFactory;
 import com.paymybuddy.exchange.models.Description;
+import com.paymybuddy.exchange.models.Transaction;
 import org.springframework.stereotype.Service;
 
 import java.sql.SQLException;
@@ -29,6 +30,14 @@ public class DescriptionService {
 
     public List<Description> listAll(){
         return DAOFactory.getDescriptionDAO().listAll();
+    }
+
+    public Description getDescriptionByContent(String content){
+        for (Description description: listAll()) {
+            if (description.getContent().equals(content))
+                return description;
+        }
+        return null;
     }
 
 }

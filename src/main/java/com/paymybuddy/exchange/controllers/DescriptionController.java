@@ -25,6 +25,8 @@ public class DescriptionController {
         if (created == false)
             return ResponseEntity.noContent().build();
 
+        description.setId(descriptionService.getDescriptionByContent(description.getContent()).getId());
+
         Description ourDescription = descriptionService.read(description.getId());
         if (ourDescription == null)
             return ResponseEntity.noContent().build();

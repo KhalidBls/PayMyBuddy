@@ -56,7 +56,7 @@ public class TransactionServiceIT {
         mockStatic(DAOFactory.class);
         //WHEN
         PowerMockito.when(DAOFactory.getTransactionDAO()).thenReturn(transactionDAO);
-        Mockito.when(userRelationshipService.verifyRelationship(2,22)).thenReturn(true);
+        Mockito.when(userRelationshipService.verifyRelationship(2,22)).thenReturn(new UserRelationship(2,22));
         Mockito.when(userService.read(2)).thenReturn(user);
         Mockito.when(userService.read(22)).thenReturn(user2);
         //THEN

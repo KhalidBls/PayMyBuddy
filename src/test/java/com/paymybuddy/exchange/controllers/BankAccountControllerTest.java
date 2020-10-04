@@ -61,7 +61,7 @@ public class BankAccountControllerTest {
         //WHEN
         when(bankAccountService.create(any(BankAccount.class))).thenReturn(true);
         when(bankAccountService.read(any(Integer.class))).thenReturn(bankAccount);
-
+        when(bankAccountService.getBankAccountByIdUser(any(Integer.class))).thenReturn(bankAccount);
 
         //THEN
         mockMvc.perform(post("/bankAccounts")

@@ -55,6 +55,7 @@ public class UserRelatonshipControllerTest {
         //WHEN
         when(userRelationshipService.create(any(UserRelationship.class))).thenReturn(true);
         when(userRelationshipService.read(any(Integer.class))).thenReturn(userRelationship);
+        when(userRelationshipService.verifyRelationship(any(Integer.class),any(Integer.class))).thenReturn(null).thenReturn(userRelationship);
 
         //THEN
         mockMvc.perform(post("/relationships")

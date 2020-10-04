@@ -2,6 +2,7 @@ package com.paymybuddy.exchange.services;
 
 import com.paymybuddy.exchange.dao.DAOFactory;
 import com.paymybuddy.exchange.models.BankAccount;
+import com.paymybuddy.exchange.models.Transaction;
 import org.springframework.stereotype.Service;
 
 import java.sql.SQLException;
@@ -28,6 +29,14 @@ public class BankAccountService {
 
     public List<BankAccount> listAll(){
         return DAOFactory.getBankAccountDAO().listAll();
+    }
+
+    public BankAccount getBankAccountByIdUser(int idUser){
+        for (BankAccount bankAccount: listAll()) {
+            if (bankAccount.getIdUser()==idUser)
+                return bankAccount;
+        }
+        return null;
     }
 
 }

@@ -58,6 +58,7 @@ public class TransactionControllerTest {
         //WHEN
         when(transactionService.create(any(Transaction.class))).thenReturn(true);
         when(transactionService.read(any(Integer.class))).thenReturn(transaction);
+        when(transactionService.getTransactionByIdUserAndSender(any(Integer.class),any(Integer.class))).thenReturn(transaction);
 
         //THEN
         mockMvc.perform(post("/transactions")
